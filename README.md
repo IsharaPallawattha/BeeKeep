@@ -1,6 +1,6 @@
 # flutter_application_2
 
-A new Flutter project.
+A new Flutter project for mobile app module.
 
 ## Getting Started
 
