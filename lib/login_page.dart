@@ -1,4 +1,21 @@
 import 'package:flutter/material.dart';
+// import 'dashboard_screen.dart';
+import 'apiaries.dart';
+
+// void main() {
+//   runApp(const Login());
+// }
+
+class Login extends StatelessWidget {
+  const Login({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: LoginPage(), // Wrap LoginPage here
+    );
+  }
+}
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,6 +27,15 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  // Function to handle login button press (replace with your authentication logic)
+  void handleLogin() {
+    String username = usernameController.text;
+    String password = passwordController.text;
+
+    // Implement logic to authenticate with backend service
+    debugPrint("Username: $username");
+    debugPrint("Password: $password");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,12 +107,23 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Widget _LoginBtn() {
     return ElevatedButton(
       onPressed: () {
         debugPrint("Username: ${usernameController.text}");
         debugPrint("Password: ${passwordController.text}");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Apiaries()),
+        );
       },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.yellow,
+        backgroundColor: Colors.white,
+        shape: const StadiumBorder(),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+      ),
       child: const SizedBox(
         width: double.infinity,
         child: Text(
@@ -94,12 +131,6 @@ class _LoginPageState extends State<LoginPage> {
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 20),
         ),
-      ),
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.yellow,
-        backgroundColor: Colors.white,
-        shape: const StadiumBorder(),
-        padding: const EdgeInsets.symmetric(vertical: 16),
       ),
     );
   }

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
+class Live extends StatelessWidget {
+  const Live({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: LivePage(),
     );
   }
 }
 
 class LivePage extends StatelessWidget {
+  const LivePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,33 +36,33 @@ class LivePage extends StatelessWidget {
                   title: 'Timely\nAnalysis',
                   onTap: () {
                     // Navigate to Timely Analysis page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TimelyAnalysisPage()),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => TimelyAnalysisPage()),
+                    // );
                   },
                 ),
                 TopPanelItem(
                   title: 'Swarming\nAlerts',
                   onTap: () {
                     // Navigate to Swarming Alerts page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SwarmingAlertsPage()),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => SwarmingAlertsPage()),
+                    // );
                   },
                 ),
                 TopPanelItem(
                   title: 'More\nAnalysis',
                   onTap: () {
                     // Navigate to More Analysis page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MoreAnalysisPage()),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => MoreAnalysisPage()),
+                    // );
                   },
                 ),
               ],
@@ -115,7 +119,7 @@ class LivePage extends StatelessWidget {
                 Navigator.pop(context);
               },
               backgroundColor: Colors.blue,
-              child: Text('Home'),
+              child: const Text('Home'),
             ),
           ),
         ],
@@ -130,6 +134,7 @@ class TopPanelItem extends StatelessWidget {
   final VoidCallback onTap;
 
   const TopPanelItem({
+    super.key,
     required this.title,
     this.isSelected = false,
     required this.onTap,
@@ -163,6 +168,7 @@ class InfoCard extends StatelessWidget {
   final String value;
 
   const InfoCard({
+    super.key,
     required this.title,
     required this.icon,
     required this.value,
@@ -181,18 +187,18 @@ class InfoCard extends StatelessWidget {
               width: 50,
               height: 50,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               value,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13,
               ),
             ),
