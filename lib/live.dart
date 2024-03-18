@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'apiaries.dart';
 
 class Live extends StatelessWidget {
   const Live({super.key});
@@ -115,8 +116,11 @@ class LivePage extends StatelessWidget {
             right: 16.0,
             child: FloatingActionButton(
               onPressed: () {
-                // Navigate back to the Home page
-                Navigator.pop(context);
+                // Navigate back to the dashboard_screen page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Apiaries()),
+                );
               },
               backgroundColor: Colors.blue,
               child: const Text('Home'),

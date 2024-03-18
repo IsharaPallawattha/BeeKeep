@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
         debugPrint("Password: ${passwordController.text}");
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Apiaries()),
+          MaterialPageRoute(builder: (context) => const Apiaries()),
         );
       },
       style: ElevatedButton.styleFrom(

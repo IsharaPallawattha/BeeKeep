@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
+import 'login_page.dart';
 
 // void main() {
 //   runApp(const MyApp());
@@ -7,6 +8,15 @@ import 'dashboard_screen.dart';
 
 class Apiaries extends StatelessWidget {
   const Apiaries({super.key});
+
+  void logout(BuildContext context) {
+    // Implement your logout logic here
+    // For example, you can navigate to the login screen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,23 +149,27 @@ class Apiaries extends StatelessWidget {
               icon: Icon(Icons.dashboard),
               label: 'Dashboard',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Apiaries',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.hive),
-              label: 'Hives',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.home),
+            //   label: 'Apiaries',
+            // ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.hive),
+            //   label: 'Hives',
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.logout),
               label: 'Log out',
             ),
           ],
-          selectedItemColor: Colors.green,
+          selectedItemColor: Color.fromARGB(255, 242, 255, 242),
           unselectedItemColor: const Color.fromARGB(255, 44, 43, 43),
           onTap: (int index) {
             // Handle navigation to the corresponding tab
+            if (index == 1) {
+              // Logout when logout icon pressed
+              logout(context);
+            }
           },
         ),
       ),
