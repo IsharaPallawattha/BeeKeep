@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'dashboard_screen.dart';
 import 'apiaries.dart';
+import 'dashboard.dart';
 
 // void main() {
 //   runApp(const Login());
@@ -115,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
         debugPrint("Password: ${passwordController.text}");
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Apiaries()),
+          MaterialPageRoute(builder: (context) => const  DashboardPage()),
         );
       },
       style: ElevatedButton.styleFrom(
