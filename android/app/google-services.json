@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "944056849756",
+    "project_id": "beehivenew-5daa2",
+    "storage_bucket": "beehivenew-5daa2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:944056849756:android:a7f9e4a1c98a3be20f5d99",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkrHjRCexB_JCTC5aXUyfx03jfvmbKs7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,34 +1,36 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'dashboard_screen.dart';
 import 'apiaries.dart';
 import 'dashboard.dart';
 
-// void main() {
-//   runApp(const Login());
-// }
+void main() {
+  runApp(const Login());
+}
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: LoginPage(), // Wrap LoginPage here
+      home: LoginPage(),
     );
   }
 }
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  // Function to handle login button press (replace with your authentication logic)
+
   void handleLogin() {
     String username = usernameController.text;
     String password = passwordController.text;
@@ -70,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 20),
             _inputField("Password", passwordController, isPassword: true),
             const SizedBox(height: 50),
-            _LoginBtn(),
+            _loginBtn(),
             const SizedBox(height: 20),
           ],
         ),
@@ -89,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _inputField(String hintText, TextEditingController controller,
-      {isPassword = false}) {
+      {bool isPassword = false}) {
     var border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(18),
       borderSide: const BorderSide(color: Colors.white),
@@ -108,15 +110,14 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // ignore: non_constant_identifier_names
-  Widget _LoginBtn() {
+  Widget _loginBtn() {
     return ElevatedButton(
       onPressed: () {
         debugPrint("Username: ${usernameController.text}");
         debugPrint("Password: ${passwordController.text}");
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const  DashboardPage()),
+          MaterialPageRoute(builder: (context) => const DashboardPage()),
         );
       },
       style: ElevatedButton.styleFrom(
@@ -134,5 +135,23 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _logIn() async {
+    String username = usernameController.text;
+    String password = passwordController.text;
+
+    UserCredential userCredential =
+        await _auth.signInWithEmailAndPassword(
+      email: username,
+      password: password,
+    );
+
+    if (userCredential.user != null) {
+      print("User is successfully logged in");
+      Navigator.pushNamed(context, "/home");
+    } else {
+      print("Some error happened");
+    }
   }
 }
