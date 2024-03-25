@@ -14,7 +14,7 @@ class Apiaries extends StatelessWidget {
     // For example, you can navigate to the login screen
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Login()),
+      MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
 

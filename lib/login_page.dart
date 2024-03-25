@@ -1,15 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'dashboard_screen.dart';
-import 'apiaries.dart';
-import 'dashboard.dart';
+import 'firebase_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
-void main() {
-  runApp(const Login());
-}
-
-class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,34 +22,54 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final FirebaseService _firebaseService = FirebaseService();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void handleLogin() {
-    String username = usernameController.text;
-    String password = passwordController.text;
+  Future<void> handleLogin() async {
+    String username = usernameController.text.trim();
+    String password = passwordController.text.trim();
 
-    // Implement logic to authenticate with backend service
-    debugPrint("Username: $username");
-    debugPrint("Password: $password");
+    // if (username.isNotEmpty && password.isNotEmpty) {
+    //   try {
+    //     await _firebaseService.signInWithEmailAndPassword(
+    //       email: username,
+    //       password: password,
+    //     );
+    //     Navigator.pushReplacement(
+    //       context,
+    //       MaterialPageRoute(builder: (context) => const DashboardPage()),
+    //     );
+    //   } on FirebaseAuthException catch (e) {
+    //     print("Failed to authenticate the user: ${e.message}");
+    //   }
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color.fromARGB(255, 240, 243, 33),
-              Color.fromARGB(255, 247, 255, 177),
-            ],
-          ),
-        ),
-        child: _page(),
+    return MaterialApp(
+      home: Scaffold(
+        key: _scaffoldKey,
+        drawer: const Drawer(),
+        body: Stack(
+          children: <Widget>[
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    Color.fromARGB(255, 240, 243, 33),
+                    Color.fromARGB(255, 247, 255, 177),
+                  ],
+                ),
+              ),
+              child: _page(),
+            ),
+          ], // Moved 'child' inside the 'children' property
+        ), // Added closing parenthesis for 'Stack'
       ),
     );
   }
@@ -63,18 +78,20 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.all(32.0),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _icon(),
-            const SizedBox(height: 50),
-            _inputField("Username", usernameController),
-            const SizedBox(height: 20),
-            _inputField("Password", passwordController, isPassword: true),
-            const SizedBox(height: 50),
-            _loginBtn(),
-            const SizedBox(height: 20),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _icon(),
+              const SizedBox(height: 50),
+              _inputField("Username", usernameController),
+              const SizedBox(height: 20),
+              _inputField("Password", passwordController, isPassword: true),
+              const SizedBox(height: 50),
+              _loginBtn(),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
@@ -113,12 +130,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _loginBtn() {
     return ElevatedButton(
       onPressed: () {
-        debugPrint("Username: ${usernameController.text}");
-        debugPrint("Password: ${passwordController.text}");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardPage()),
-        );
+        handleLogin();
       },
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.yellow,
@@ -129,29 +141,11 @@ class _LoginPageState extends State<LoginPage> {
       child: const SizedBox(
         width: double.infinity,
         child: Text(
-          "Login ",
+          "Login",
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 20),
         ),
       ),
     );
-  }
-
-  void _logIn() async {
-    String username = usernameController.text;
-    String password = passwordController.text;
-
-    UserCredential userCredential =
-        await _auth.signInWithEmailAndPassword(
-      email: username,
-      password: password,
-    );
-
-    if (userCredential.user != null) {
-      print("User is successfully logged in");
-      Navigator.pushNamed(context, "/home");
-    } else {
-      print("Some error happened");
-    }
   }
 }
