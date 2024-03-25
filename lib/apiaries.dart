@@ -2,16 +2,10 @@ import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'login_page.dart';
 
-// void main() {
-//   runApp(const MyApp());
-// }
-
 class Apiaries extends StatelessWidget {
-  const Apiaries({super.key});
+  const Apiaries({Key? key});
 
   void logout(BuildContext context) {
-    // Implement your logout logic here
-    // For example, you can navigate to the login screen
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -20,6 +14,13 @@ class Apiaries extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Sample data representing apiaries (replace with your Firestore retrieval logic)
+    final apiariesData = [
+      {"name": "Apiary 1", "location": "Bandarawela"},
+      {"name": "Apiary 2", "location": "Kurunegala"},
+      // Add more apiaries as needed
+    ];
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -30,10 +31,12 @@ class Apiaries extends StatelessWidget {
         body: Container(
           color: Colors.yellow,
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
+            child: ListView.builder(
+              itemCount: apiariesData.length,
+              itemBuilder: (context, index) {
+                final apiary = apiariesData[index];
+                return Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
                   width: 300,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -43,24 +46,30 @@ class Apiaries extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Apiary',
-                        style: TextStyle(fontSize: 24),
-                      ),
+                      // Text(
+                      //   // apiary['name'],
+                      //   style: const TextStyle(fontSize: 24),
+                      // ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'Location: Bandarawela',
-                        style: TextStyle(fontSize: 18),
+                      Text(
+                        'Location: ${apiary['location']}',
+                        style: const TextStyle(fontSize: 18),
                       ),
                       const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              // Implement your logic for apiary details
+                            },
                             style: TextButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 152, 188, 8),
+                              backgroundColor: const Color.fromARGB(
+                                255,
+                                152,
+                                188,
+                                8,
+                              ),
                             ),
                             child: const Text('Details'),
                           ),
@@ -75,8 +84,12 @@ class Apiaries extends StatelessWidget {
                               );
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 71, 134, 186),
+                              backgroundColor: const Color.fromARGB(
+                                255,
+                                71,
+                                134,
+                                186,
+                              ),
                             ),
                             child: const Text('Hives'),
                           ),
@@ -84,61 +97,8 @@ class Apiaries extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 32),
-                Container(
-                  width: 300,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Apiary',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Location: Kurunegala',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 152, 188, 8),
-                            ),
-                            child: const Text('Details'),
-                          ),
-                          const SizedBox(width: 16),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Dashboard(),
-                                ),
-                              );
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 71, 134, 186),
-                            ),
-                            child: const Text('Hives'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ),
@@ -149,25 +109,15 @@ class Apiaries extends StatelessWidget {
               icon: Icon(Icons.dashboard),
               label: 'Dashboard',
             ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.home),
-            //   label: 'Apiaries',
-            // ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.hive),
-            //   label: 'Hives',
-            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.logout),
               label: 'Log out',
             ),
           ],
-          selectedItemColor: Color.fromARGB(255, 242, 255, 242),
+          selectedItemColor: const Color.fromARGB(255, 242, 255, 242),
           unselectedItemColor: const Color.fromARGB(255, 44, 43, 43),
           onTap: (int index) {
-            // Handle navigation to the corresponding tab
             if (index == 1) {
-              // Logout when logout icon pressed
               logout(context);
             }
           },

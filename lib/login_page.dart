@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dashboard.dart';
+import 'apiaries.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
             // For example, you can navigate to the dashboard page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => DashboardPage()),
+              MaterialPageRoute(builder: (context) => Apiaries()),
             );
             return; // Exit the function since login is successful
           }
