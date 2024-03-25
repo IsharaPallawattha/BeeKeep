@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'firebase_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'dashboard.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginPage(),
+    return MaterialApp(
+      home: Scaffold(
+        body: LoginPage(), // Wrap LoginPage with Scaffold
+      ),
     );
   }
 }
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -23,28 +25,53 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final FirebaseService _firebaseService = FirebaseService();
+
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   Future<void> handleLogin() async {
-    String username = usernameController.text.trim();
-    String password = passwordController.text.trim();
+    String enteredUsername = usernameController.text.trim();
+    String enteredPassword = passwordController.text.trim();
 
-    // if (username.isNotEmpty && password.isNotEmpty) {
-    //   try {
-    //     await _firebaseService.signInWithEmailAndPassword(
-    //       email: username,
-    //       password: password,
-    //     );
-    //     Navigator.pushReplacement(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => const DashboardPage()),
-    //     );
-    //   } on FirebaseAuthException catch (e) {
-    //     print("Failed to authenticate the user: ${e.message}");
-    //   }
-    // }
+    if (enteredUsername.isNotEmpty && enteredPassword.isNotEmpty) {
+      try {
+        QuerySnapshot<Map<String, dynamic>> usersSnapshot =
+        await FirebaseFirestore.instance.collection('Users').get();
+
+        // Iterate through the documents in the 'Users' collection
+        for (QueryDocumentSnapshot<Map<String, dynamic>> user
+        in usersSnapshot.docs) {
+          // Retrieve the username and password from the user document
+          String storedUsername = user.data()['Username'];
+          String storedPassword = user.data()['Password'];
+
+          print("sds"+storedPassword);
+          print("sds"+enteredPassword);
+
+
+          // Compare the entered username and password with the stored ones
+          if (enteredUsername == storedUsername && enteredPassword == storedPassword) {
+            // Username and password match, proceed with login
+            // For example, you can navigate to the dashboard page
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => DashboardPage()),
+            );
+            return; // Exit the function since login is successful
+          }
+        }
+
+        // If the loop completes without finding a match, show an error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid username or password.'),
+          ),
+        );
+      } catch (e) {
+        print("Error: $e");
+        // Handle any errors that may occur during the process
+      }
+    }
   }
 
   @override
@@ -68,8 +95,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               child: _page(),
             ),
-          ], // Moved 'child' inside the 'children' property
-        ), // Added closing parenthesis for 'Stack'
+          ],
+        ),
       ),
     );
   }
