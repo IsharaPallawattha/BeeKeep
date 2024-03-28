@@ -112,21 +112,21 @@ class LivePage extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            bottom: 16.0,
-            right: 16.0,
-            child: FloatingActionButton(
-              onPressed: () {
-                // Navigate back to the dashboard_screen page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Apiaries()),
-                );
-              },
-              backgroundColor: Colors.blue,
-              child: const Text('Home'),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 16.0,
+          //   right: 16.0,
+          //   child: FloatingActionButton(
+          //     onPressed: () {
+          //       // Navigate back to the dashboard_screen page
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => Apiaries()),
+          //       );
+          //     },
+          //     backgroundColor: Colors.blue,
+          //     child: const Text('Home'),
+          //   ),
+          // ),
         ],
       ),
     );
