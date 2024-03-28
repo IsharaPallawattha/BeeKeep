@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
             // For example, you can navigate to the dashboard page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => Apiaries()),
+              MaterialPageRoute(builder: (context) => Apiaries(userId: user.id)),
             );
             return; // Exit the function since login is successful
           }

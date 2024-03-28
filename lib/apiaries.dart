@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_2/dashboard.dart';
 import 'dashboard_screen.dart';
 import 'login_page.dart';
+import 'dashboard_screen.dart';
 
 class Apiaries extends StatelessWidget {
-  const Apiaries({Key? key});
+  final String userId; // Add userId parameter
+
+  const Apiaries({Key? key, required this.userId}) : super(key: key);
 
   void logout(BuildContext context) {
     Navigator.pushReplacement(
@@ -12,11 +16,19 @@ class Apiaries extends StatelessWidget {
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
+  void navigateToHives(BuildContext context, String apiaryId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Hives(apiaryId: apiaryId, userId:userId),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('Users').doc('U001').collection('Apiary').snapshots(),
+      stream: FirebaseFirestore.instance.collection('Users').doc(userId).collection('Apiary').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -68,27 +80,7 @@ class Apiaries extends StatelessWidget {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  // Implement your logic for apiary details
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    152,
-                                    188,
-                                    8,
-                                  ),
-                                ),
-                                child: const Text('Details'),
-                              ),
-                              const SizedBox(width: 16),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Dashboard(),
-                                    ),
-                                  );
+                                  navigateToHives(context, apiariesData[index].id);
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: const Color.fromARGB(

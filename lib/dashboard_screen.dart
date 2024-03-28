@@ -1,223 +1,150 @@
 import 'package:flutter/material.dart';
-import 'live.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'live.dart';
 
-class Dashboard extends StatelessWidget {
-  List cateNames = [
-    "Hive 1",
-    "Hive 2",
-    "Hive 3",
-    "Hive 4",
-    "Hive 5",
-    "Hive 6",
-  ];
+class Hives extends StatefulWidget {
+  final String apiaryId;
+  final String userId;
 
-  List<Color> cateColors = [
-    const Color.fromARGB(255, 107, 104, 30),
-    const Color.fromARGB(255, 107, 104, 30),
-    const Color.fromARGB(255, 107, 104, 30),
-    const Color.fromARGB(255, 107, 104, 30),
-    const Color.fromARGB(255, 107, 104, 30),
-    const Color.fromARGB(255, 107, 104, 30),
-  ];
 
-  List<Icon> cateIcons = [
-    const Icon(Icons.inventory_2, color: Colors.white, size: 35),
-    const Icon(Icons.inventory_2, color: Colors.white, size: 35),
-    const Icon(Icons.inventory_2, color: Colors.white, size: 35),
-    const Icon(Icons.inventory_2, color: Colors.white, size: 35),
-    const Icon(Icons.inventory_2, color: Colors.white, size: 35),
-    const Icon(Icons.inventory_2, color: Colors.white, size: 35),
-  ];
-
-  Dashboard({super.key});
+  const Hives({Key? key, required this.apiaryId, required this.userId}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(
-                      top: 15, left: 15, right: 15, bottom: 10),
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 3.32,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(255, 236, 24, 1),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                    ),
-                  ),
+  State<Hives> createState() => _HivesState();
+}
 
-                  //side nav
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {},
-                            child: const Icon(
-                              Icons.sort,
-                              color: Colors.white,
-                              size: 40,
-                            ),
-                          ),
-                          Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Colors.white,
-                                image: const DecorationImage(
-                                  image: NetworkImage(
-                                      "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"),
-                                  fit: BoxFit.cover,
-                                ),
-                              )),
-                        ],
+class _HivesState extends State<Hives> {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('Users')
+          .doc(widget.userId) // Replace 'U001' with your actual document ID
+          .collection('Apiary')
+          .doc(widget.apiaryId)
+          .collection('Hives')
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+          return Center(child: Text('No hives available for this apiary'));
+        } else {
+          final hivesData = snapshot.data!.docs;
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Hi Liyanage !'),
+              backgroundColor: Colors.green,
+              centerTitle: true,
+            ),
+            body: Container(
+              color: Colors.yellow,
+              child: Center(
+                child: ListView.builder(
+                  itemCount: hivesData.length,
+                  itemBuilder: (context, index) {
+                    final hive = hivesData[index].data()! as Map<String, dynamic>;
+                    return Container(
+                      margin: const EdgeInsets.all(20),
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Hello,",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            hive['name'] as String, // Convert integer to string before displaying
+                            style: const TextStyle(fontSize: 24),
                           ),
+
+                          const SizedBox(height: 16),
                           Text(
-                            "Liyana GAY",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            'Key: ${hive['key']}',
+                            style: const TextStyle(fontSize: 18),
                           ),
-                          //SizedBox(height: 20),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Container(
-                        margin: const EdgeInsets.only(top: 5, bottom: 20),
-                        width: MediaQuery.of(context).size.width,
-                        height: 55,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: " Search here...",
-                            hintStyle: TextStyle(
-                              color: Colors.black.withOpacity(0.5),
-                            ),
-                            prefixIcon: const Icon(Icons.search, size: 25),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 1.431,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 236, 24, 1),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: MediaQuery.of(context).size.height / 1.43,
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.only(top: 30),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  /*    borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ), */
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 20, left: 15, right: 15),
-                        child: Column(
-                          children: [
-                            GridView.builder(
-                              itemCount: cateNames.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 1.2,
-                              ),
-                              itemBuilder: (context, index) {
-                                return ElevatedButton(
-                                  onPressed: () {
-                                    // navigate live.dart
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Live(),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    height: 80,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                      color: cateColors[index],
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: cateIcons[index],
-                                  ),
-                                  // child: const SizedBox(height: 10),
-                                  // child: Text(
-                                  //   cateNames[index],
-                                  //   style: TextStyle(
-                                  //     fontSize: 20,
-                                  //     fontWeight: FontWeight.w500,
-                                  //     color: Colors.black.withOpacity(0.6),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  // Navigate to live.dart or implement your logic
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => Live(),
                                   //   ),
-                                  // ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
+                                  // );
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    71,
+                                    134,
+                                    186,
+                                  ),
+                                ),
+                                child: const Text('Live Data'),
+                              ),
+                              SizedBox(width: 20),
+                              TextButton(
+                                onPressed: () {
+                                  // Navigate to live.dart or implement your logic
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => Live(),
+                                  //   ),
+                                  // );
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    71,
+                                    134,
+                                    186,
+                                  ),
+                                ),
+                                child: const Text('Timely Analysis'),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ),
             ),
-          ],
-        ),
-      ),
+            bottomNavigationBar: BottomNavigationBar(
+              backgroundColor: Colors.green,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.dashboard),
+                  label: 'Dashboard',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.logout),
+                  label: 'Log out',
+                ),
+              ],
+              selectedItemColor: const Color.fromARGB(255, 242, 255, 242),
+              unselectedItemColor: const Color.fromARGB(255, 44, 43, 43),
+              onTap: (int index) {
+                if (index == 1) {
+                  // Implement your logout logic here
+                }
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }
