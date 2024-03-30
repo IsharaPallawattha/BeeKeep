@@ -1,166 +1,136 @@
 import 'package:flutter/material.dart';
-import 'apiaries.dart';
-import 'timely_analysis.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class Live extends StatelessWidget {
-  const Live({super.key});
+void main() {
+  runApp(Live());
+}
+
+class Live extends StatefulWidget {
+  const Live({Key? key}) : super(key: key);
 
   @override
+  State<Live> createState() => _LiveState();
+}
+
+class _LiveState extends State<Live> {
+  @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: LivePage(),
     );
   }
 }
 
-class LivePage extends StatelessWidget {
-  const LivePage({super.key});
+class LivePage extends StatefulWidget {
+  const LivePage({Key? key}) : super(key: key);
+
+  @override
+  State<LivePage> createState() => _LivePageState();
+}
+
+class _LivePageState extends State<LivePage> {
+  String? liveData;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData(); // Call the fetchData() function when the page is loaded
+  }
+
+  Future<void> fetchData() async {
+    final url = Uri.parse('https://3dcb-112-134-96-193.ngrok-free.app/api/live_data');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        setState(() {
+          liveData = json.encode(jsonData); // Convert JSON to string
+        });
+      } else {
+        print('Failed to fetch data. Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-            color: Colors.blue,
-            height: 100, // Adjust the height as needed
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                TopPanelItem(
-                  title: 'Live',
-                  isSelected: true,
-                  onTap: () {
-                    // Do nothing as we're already in the Live page
-                  },
-                ),
-                TopPanelItem(
-                  title: 'Timely\nAnalysis',
-                  onTap: () {
-                    // Navigate to Timely Analysis page
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => TimelyAnalysisPage()),
-                    // );
-                  },
-                ),
-                TopPanelItem(
-                  title: 'Swarming\nAlerts',
-                  onTap: () {
-                    // Navigate to Swarming Alerts page
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => SwarmingAlertsPage()),
-                    // );
-                  },
-                ),
-                TopPanelItem(
-                  title: 'More\nAnalysis',
-                  onTap: () {
-                    // Navigate to More Analysis page
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => MoreAnalysisPage()),
-                    // );
-                  },
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              children: const <Widget>[
-                InfoCard(
-                  title: 'Temperature',
-                  icon: 'assets/thermometer.png',
-                  value: '25°C',
-                ),
-                InfoCard(
-                  title: 'Humidity',
-                  icon: 'assets/humidity.png',
-                  value: '60%',
-                ),
-                InfoCard(
-                  title: 'Honey Amount',
-                  icon: 'assets/honey.png',
-                  value: '50 kg',
-                ),
-                InfoCard(
-                  title: 'Current Frequency',
-                  icon: 'assets/frequency.png',
-                  value: '100 Hz',
-                ),
-                InfoCard(
-                  title: 'Rainfall Amount',
-                  icon: 'assets/rain.png',
-                  value: '10 mm',
-                ),
-                InfoCard(
-                  title: 'Wind Speed',
-                  icon: 'assets/wind.png',
-                  value: '20 km/h',
-                ),
-                InfoCard(
-                  title: 'Atmospheric Pressure',
-                  icon: 'assets/pressure-gauge.png',
-                  value: '1013 hPa',
-                ),
-              ],
-            ),
-          ),
-          // Positioned(
-          //   bottom: 16.0,
-          //   right: 16.0,
-          //   child: FloatingActionButton(
-          //     onPressed: () {
-          //       // Navigate back to the dashboard_screen page
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(builder: (context) => Apiaries()),
-          //       );
-          //     },
-          //     backgroundColor: Colors.blue,
-          //     child: const Text('Home'),
-          //   ),
-          // ),
-        ],
+      appBar: AppBar(
+        title: Text('Live Data Example'),
       ),
-    );
-  }
-}
-
-class TopPanelItem extends StatelessWidget {
-  final String title;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const TopPanelItem({
-    super.key,
-    required this.title,
-    this.isSelected = false,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          color: isSelected ? Colors.white : Colors.blue,
-          child: Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                color: isSelected ? Colors.black : Colors.white,
-                fontSize: 18,
+      body: Container(
+        color: Color(0xFFE1DB82),
+        child: Column(
+          children: [
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                children: <Widget>[
+                  InfoCard(
+                    title: 'Inside Temperature',
+                    icon: 'assets/thermometer.png',
+                    value: liveData != null
+                        ? 'In Temperature: ${json.decode(liveData!)['live_in_temperature'] ?? 'N/A'}°C'
+                        : 'Fetching data...',
+                  ),
+                  InfoCard(
+                    title: 'Outside Temperature',
+                    icon: 'assets/thermometer.png',
+                    value: liveData != null
+                        ? 'Out Temperature: ${json.decode(liveData!)['live_out_temperature'] ?? 'N/A'}°C'
+                        : 'Fetching data...',
+                  ),
+                  InfoCard(
+                    title: 'Inside Humidity',
+                    icon: 'assets/humidity.png',
+                    value: liveData != null
+                        ? 'In Humidity: ${json.decode(liveData!)['live_in_humidity'] ?? 'N/A'}%'
+                        : 'Fetching data...',
+                  ),
+                  InfoCard(
+                    title: 'Outside Humidity',
+                    icon: 'assets/humidity.png',
+                    value: liveData != null
+                        ? 'Out Humidity: ${json.decode(liveData!)['live_out_humidity'] ?? 'N/A'}%'
+                        : 'Fetching data...',
+                  ),
+                  InfoCard(
+                    title: 'Frequency',
+                    icon: 'assets/frequency.png',
+                    value: liveData != null
+                        ? 'Frequency: ${json.decode(liveData!)['live_frequency'] ?? 'N/A'}Hz'
+                        : 'Fetching data...',
+                  ),
+                  InfoCard(
+                    title: 'Weight',
+                    icon: 'assets/pressure-gauge.png',
+                    value: liveData != null
+                        ? 'Weight: ${json.decode(liveData!)['live_weight'] ?? 'N/A'}Kg'
+                        : 'Fetching data...',
+                  ),
+                  InfoCard(
+                    title: 'CO2',
+                    icon: 'assets/gas.png',
+                    value: liveData != null
+                        ? 'CO2: ${json.decode(liveData!)['live_co'] ?? 'N/A'}ppm'
+                        : 'Fetching data...',
+                  ),
+                  InfoCard(
+                    title: 'Rainfall',
+                    icon: 'assets/rain.png',
+                    value: liveData != null
+                        ? 'Rainfall: ${json.decode(liveData!)['live_rain'] ?? 'N/A'}'
+                        : 'Fetching data...',
+                  ),
+                  // Other InfoCard widgets...
+                ],
               ),
             ),
-          ),
+
+          ],
         ),
       ),
     );
@@ -173,11 +143,11 @@ class InfoCard extends StatelessWidget {
   final String value;
 
   const InfoCard({
-    super.key,
+    Key? key,
     required this.title,
     required this.icon,
     required this.value,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

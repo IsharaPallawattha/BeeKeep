@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'live.dart';
+import 'live.dart';
 
 class Hives extends StatefulWidget {
   final String apiaryId;
@@ -74,13 +74,12 @@ class _HivesState extends State<Hives> {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  // Navigate to live.dart or implement your logic
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => Live(),
-                                  //   ),
-                                  // );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Live(),
+                                    ),
+                                  );
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: const Color.fromARGB(
