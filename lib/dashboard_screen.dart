@@ -94,6 +94,26 @@ class _HivesState extends State<Hives> {
                               SizedBox(width: 20),
                               TextButton(
                                 onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Live(),
+                                    ),
+                                  );
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    255,
+                                    165,
+                                    0,
+                                  ),
+                                ),
+                                child: const Text('Alerts'),
+                              ),
+                              SizedBox(width: 20),
+                              TextButton(
+                                onPressed: () {
                                   // Navigate to live.dart or implement your logic
                                   // Navigator.push(
                                   //   context,
@@ -110,7 +130,7 @@ class _HivesState extends State<Hives> {
                                     186,
                                   ),
                                 ),
-                                child: const Text('Timely Analysis'),
+                                child: const Text('Timely'),
                               ),
                             ],
                           ),
