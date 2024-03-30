@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'live.dart';
+import 'timely_analysis.dart';
 
 class Hives extends StatefulWidget {
   final String apiaryId;
@@ -114,13 +115,10 @@ class _HivesState extends State<Hives> {
                               SizedBox(width: 20),
                               TextButton(
                                 onPressed: () {
-                                  // Navigate to live.dart or implement your logic
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => Live(),
-                                  //   ),
-                                  // );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => TimeAnalysis()),
+                                  );
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: const Color.fromARGB(

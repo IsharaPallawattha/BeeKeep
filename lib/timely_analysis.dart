@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+
 class TimeAnalysis extends StatefulWidget {
   const TimeAnalysis({Key? key}) : super(key: key);
 
@@ -147,8 +148,3 @@ class HiveWeightData {
   HiveWeightData(this.dateTime, this.hiveWeight);
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: TimeAnalysis(),
-  ));
-}
