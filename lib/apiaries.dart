@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_application_2/dashboard.dart';
 import 'dashboard_screen.dart';
 import 'login_page.dart';
-import 'dashboard_screen.dart';
 
 class Apiaries extends StatelessWidget {
   final String userId; // Add userId parameter
 
-  const Apiaries({Key? key, required this.userId}) : super(key: key);
+  const Apiaries({super.key, required this.userId});
 
   void logout(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
+
   void navigateToHives(BuildContext context, String apiaryId) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Hives(apiaryId: apiaryId, userId:userId),
+        builder: (context) => Hives(apiaryId: apiaryId, userId: userId),
       ),
     );
   }
@@ -28,37 +27,42 @@ class Apiaries extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('Users').doc(userId).collection('Apiary').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userId)
+          .collection('Apiary')
+          .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('No data available'));
+          return const Center(child: Text('No data available'));
         } else {
           final apiariesData = snapshot.data!.docs;
 
           return Scaffold(
             appBar: AppBar(
               title: const Text('Hi Liyanage !'),
-              backgroundColor: Colors.green,
+              backgroundColor: Color.fromARGB(255, 216, 184, 0),
               centerTitle: true,
             ),
             body: Container(
-
               color: Colors.yellow,
               child: Center(
                 child: ListView.builder(
+                  padding: const EdgeInsets.all(16),
                   itemCount: apiariesData.length,
                   itemBuilder: (context, index) {
-                    final apiary = apiariesData[index].data()! as Map<String, dynamic>;
+                    final apiary =
+                        apiariesData[index].data()! as Map<String, dynamic>;
                     return Container(
                       margin: const EdgeInsets.all(20),
                       // width: 10,
                       height: 200,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 230, 230, 230),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       padding: const EdgeInsets.all(16),
@@ -80,15 +84,17 @@ class Apiaries extends StatelessWidget {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  navigateToHives(context, apiariesData[index].id);
+                                  navigateToHives(
+                                      context, apiariesData[index].id);
                                 },
                                 style: TextButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
+                                  backgroundColor: Color.fromARGB(
                                     255,
                                     71,
                                     134,
                                     186,
                                   ),
+                                  foregroundColor: Colors.white,
                                 ),
                                 child: const Text('Hives'),
                               ),
@@ -102,7 +108,7 @@ class Apiaries extends StatelessWidget {
               ),
             ),
             bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: Colors.green,
+              backgroundColor: Color.fromARGB(255, 216, 184, 0),
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.dashboard),

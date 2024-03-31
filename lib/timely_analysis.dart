@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-
 class TimeAnalysis extends StatefulWidget {
-  const TimeAnalysis({Key? key}) : super(key: key);
+  const TimeAnalysis({super.key});
 
   @override
   State<TimeAnalysis> createState() => _TimeAnalysisState();
@@ -62,16 +61,18 @@ class _TimeAnalysisState extends State<TimeAnalysis> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Timely Analysis"),
+        title: const Text("Timely Analysis"),
         centerTitle: true,
-        backgroundColor: Colors.green[700],
+        backgroundColor: Color.fromARGB(255, 216, 184, 0),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _buildChart("Temperature Analysis", insideTempData, outsideTempData),
-            _buildChart("Humidity Analysis", insideHumidityData, outsideHumidityData),
+            _buildChart(
+                "Temperature Analysis", insideTempData, outsideTempData),
+            _buildChart(
+                "Humidity Analysis", insideHumidityData, outsideHumidityData),
             _buildChart("CO2 Level", co2Data, []),
             _buildChart("Hive Weight", hiveWeightData, []),
           ],
@@ -80,39 +81,42 @@ class _TimeAnalysisState extends State<TimeAnalysis> {
     );
   }
 
-  Widget _buildChart(String title, List<dynamic> insideData, List<dynamic> outsideData) {
+  Widget _buildChart(
+      String title, List<dynamic> insideData, List<dynamic> outsideData) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: SfCartesianChart(
-        primaryXAxis: DateTimeAxis(),
+        primaryXAxis: const DateTimeAxis(),
         title: ChartTitle(text: title),
-        legend: Legend(isVisible: true),
+        legend: const Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CartesianSeries>[
           LineSeries<dynamic, DateTime>(
             dataSource: insideData,
             xValueMapper: (dynamic item, _) => item.dateTime,
-            yValueMapper: (dynamic item, _) =>
-            item is TemperatureData
+            yValueMapper: (dynamic item, _) => item is TemperatureData
                 ? item.temperature
                 : (item is HumidityData
-                ? item.humidity
-                : (item is CO2LevelData ? item.co2Level : (item is HiveWeightData ? item.hiveWeight : 0))),
+                    ? item.humidity
+                    : (item is CO2LevelData
+                        ? item.co2Level
+                        : (item is HiveWeightData ? item.hiveWeight : 0))),
             name: 'Inside',
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+            dataLabelSettings: const DataLabelSettings(isVisible: true),
           ),
           if (outsideData.isNotEmpty)
             LineSeries<dynamic, DateTime>(
               dataSource: outsideData,
               xValueMapper: (dynamic item, _) => item.dateTime,
-              yValueMapper: (dynamic item, _) =>
-              item is TemperatureData
+              yValueMapper: (dynamic item, _) => item is TemperatureData
                   ? item.temperature
                   : (item is HumidityData
-                  ? item.humidity
-                  : (item is CO2LevelData ? item.co2Level : (item is HiveWeightData ? item.hiveWeight : 0))),
+                      ? item.humidity
+                      : (item is CO2LevelData
+                          ? item.co2Level
+                          : (item is HiveWeightData ? item.hiveWeight : 0))),
               name: 'Outside',
-              dataLabelSettings: DataLabelSettings(isVisible: true),
+              dataLabelSettings: const DataLabelSettings(isVisible: true),
             ),
         ],
       ),
@@ -147,4 +151,3 @@ class HiveWeightData {
 
   HiveWeightData(this.dateTime, this.hiveWeight);
 }
-

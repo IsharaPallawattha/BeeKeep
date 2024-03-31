@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 void main() {
-  runApp(Live());
+  runApp(const Live());
 }
 
 class Live extends StatefulWidget {
-  const Live({Key? key}) : super(key: key);
+  const Live({super.key});
 
   @override
   State<Live> createState() => _LiveState();
@@ -16,14 +16,14 @@ class Live extends StatefulWidget {
 class _LiveState extends State<Live> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: LivePage(),
     );
   }
 }
 
 class LivePage extends StatefulWidget {
-  const LivePage({Key? key}) : super(key: key);
+  const LivePage({super.key});
 
   @override
   State<LivePage> createState() => _LivePageState();
@@ -39,7 +39,8 @@ class _LivePageState extends State<LivePage> {
   }
 
   Future<void> fetchData() async {
-    final url = Uri.parse('https://3dcb-112-134-96-193.ngrok-free.app/api/live_data');
+    final url =
+        Uri.parse('https://3dcb-112-134-96-193.ngrok-free.app/api/live_data');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -59,15 +60,19 @@ class _LivePageState extends State<LivePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Live Data Example'),
+        title: const Text('Live Data'),
+        backgroundColor: const Color.fromARGB(255, 216, 184, 0),
       ),
       body: Container(
-        color: Color(0xFFE1DB82),
+        color: const Color(0xFFE1DB82),
         child: Column(
           children: [
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
+                // height: 150, // Set desired height
+                // width: 200,
+                padding: const EdgeInsets.all(15),
                 children: <Widget>[
                   InfoCard(
                     title: 'Inside Temperature',
@@ -77,7 +82,7 @@ class _LivePageState extends State<LivePage> {
                         : 'Fetching data...',
                   ),
                   InfoCard(
-                    title: 'Outside Temperature',
+                    title: '     Outside\nTemperature',
                     icon: 'assets/thermometer.png',
                     value: liveData != null
                         ? 'Out Temperature: ${json.decode(liveData!)['live_out_temperature'] ?? 'N/A'}°C'
@@ -129,7 +134,6 @@ class _LivePageState extends State<LivePage> {
                 ],
               ),
             ),
-
           ],
         ),
       ),
@@ -143,11 +147,11 @@ class InfoCard extends StatelessWidget {
   final String value;
 
   const InfoCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.icon,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

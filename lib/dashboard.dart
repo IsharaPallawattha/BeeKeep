@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+  const DashboardPage({super.key});
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -12,7 +12,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dashboard"),
+        title: const Text("Dashboard"),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -33,7 +33,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         },
                       ),
                     ),
-                    SizedBox(width: 16.0),
+                    const SizedBox(width: 16.0),
                     Expanded(
                       child: _buildSquareCard(
                         Image.asset('assets/hive.png'),
@@ -47,7 +47,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ],
                 ),
 
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Row(
                   children: [
                     Expanded(
@@ -60,7 +60,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         },
                       ),
                     ),
-                    SizedBox(width: 16.0),
+                    const SizedBox(width: 16.0),
                     Expanded(
                       child: _buildSquareCard(
                         Image.asset('assets/check.png'),
@@ -73,7 +73,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Row(
                   children: [
                     Expanded(
@@ -87,7 +87,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         },
                       ),
                     ),
-                    SizedBox(width: 16.0),
+                    const SizedBox(width: 16.0),
                     Expanded(
                       child: _buildSquareCard(
                         Image.asset('assets/alert.png'),
@@ -114,7 +114,7 @@ class _DashboardPageState extends State<DashboardPage> {
       child: AspectRatio(
         aspectRatio: 1.0,
         child: Container(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8.0),
@@ -123,7 +123,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 5,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -131,23 +131,23 @@ class _DashboardPageState extends State<DashboardPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 width: 50.0, // Specify your desired width
                 height: 50.0, // Specify your desired height
                 child: icon,
               ),
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.blue,
                 ),
               ),
-              SizedBox(height: 4.0),
+              const SizedBox(height: 4.0),
               Text(
                 value.toString(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w500,
                   color: Colors.blue,

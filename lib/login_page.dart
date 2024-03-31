@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'apiaries.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
         body: LoginPage(), // Wrap LoginPage with Scaffold
       ),
@@ -15,9 +15,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -36,26 +35,29 @@ class _LoginPageState extends State<LoginPage> {
     if (enteredUsername.isNotEmpty && enteredPassword.isNotEmpty) {
       try {
         QuerySnapshot<Map<String, dynamic>> usersSnapshot =
-        await FirebaseFirestore.instance.collection('Users').get();
+            await FirebaseFirestore.instance.collection('Users').get();
 
         // Iterate through the documents in the 'Users' collection
         for (QueryDocumentSnapshot<Map<String, dynamic>> user
-        in usersSnapshot.docs) {
+            in usersSnapshot.docs) {
           // Retrieve the username and password from the user document
           String storedUsername = user.data()['Username'];
           String storedPassword = user.data()['Password'];
+          // String storedUsername = 'user';
+          // String storedPassword = 'password';
 
-          print("sds"+storedPassword);
-          print("sds"+enteredPassword);
-
+          print("sds$storedPassword");
+          print("sds$enteredPassword");
 
           // Compare the entered username and password with the stored ones
-          if (enteredUsername == storedUsername && enteredPassword == storedPassword) {
+          if (enteredUsername == storedUsername &&
+              enteredPassword == storedPassword) {
             // Username and password match, proceed with login
             // For example, you can navigate to the dashboard page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => Apiaries(userId: user.id)),
+              MaterialPageRoute(
+                  builder: (context) => Apiaries(userId: user.id)),
             );
             return; // Exit the function since login is successful
           }
@@ -63,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
 
         // If the loop completes without finding a match, show an error message
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Invalid username or password.'),
           ),
         );
@@ -88,8 +90,8 @@ class _LoginPageState extends State<LoginPage> {
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
                   colors: [
-                    Color.fromARGB(255, 240, 243, 33),
-                    Color.fromARGB(255, 247, 255, 177),
+                    Color.fromARGB(255, 216, 184, 0),
+                    Color.fromARGB(255, 216, 184, 0),
                   ],
                 ),
               ),
@@ -127,10 +129,12 @@ class _LoginPageState extends State<LoginPage> {
   Widget _icon() {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white, width: 2),
+        border:
+            Border.all(color: const Color.fromARGB(255, 65, 60, 60), width: 2),
         shape: BoxShape.circle,
       ),
-      child: const Icon(Icons.person, color: Colors.white, size: 120),
+      child: const Icon(Icons.person,
+          color: Color.fromARGB(255, 65, 60, 60), size: 120),
     );
   }
 
@@ -138,15 +142,15 @@ class _LoginPageState extends State<LoginPage> {
       {bool isPassword = false}) {
     var border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(18),
-      borderSide: const BorderSide(color: Colors.white),
+      borderSide: const BorderSide(color: Color.fromARGB(255, 65, 60, 60)),
     );
 
     return TextField(
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Color.fromARGB(255, 65, 60, 60)),
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.white),
+        hintStyle: const TextStyle(color: Color.fromARGB(255, 65, 60, 60)),
         enabledBorder: border,
         focusedBorder: border,
       ),
@@ -160,8 +164,8 @@ class _LoginPageState extends State<LoginPage> {
         handleLogin();
       },
       style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.yellow,
-        backgroundColor: Colors.white,
+        foregroundColor: const Color.fromARGB(255, 241, 241, 241),
+        backgroundColor: const Color.fromARGB(255, 65, 60, 60),
         shape: const StadiumBorder(),
         padding: const EdgeInsets.symmetric(vertical: 16),
       ),
