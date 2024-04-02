@@ -162,7 +162,7 @@ class _HivesState extends State<Hives> {
                                 onPressed: () {
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const Live()),
+                                    MaterialPageRoute(builder: (context) => const TimeAnalysis()),
                                   );
                                 },
                                 style: ButtonStyle(

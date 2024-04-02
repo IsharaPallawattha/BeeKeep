@@ -40,7 +40,7 @@ class _LivePageState extends State<LivePage> {
   }
 
   Future<void> fetchData() async {
-    final url = Uri.parse('https://fab2-212-104-229-164.ngrok-free.app/api/live_data');
+    final url = Uri.parse('https://cf7b-112-134-114-167.ngrok-free.app/api/live_data');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -81,56 +81,56 @@ class _LivePageState extends State<LivePage> {
                     title: 'Inside Temperature',
                     icon: 'assets/thermometer.png',
                     value: liveData != null
-                        ? 'In Temperature: ${json.decode(liveData!)['live_in_temperature'] ?? 'N/A'}°C'
+                        ? '${json.decode(liveData!)['live_in_temperature'] ?? 'N/A'}°C'
                         : 'Fetching data...',
                   ),
                   InfoHexagon(
                     title: 'Outside Temperature',
                     icon: 'assets/thermometer.png',
                     value: liveData != null
-                        ? 'Out Temperature: ${json.decode(liveData!)['live_out_temperature'] ?? 'N/A'}°C'
+                        ? '${json.decode(liveData!)['live_out_temperature'] ?? 'N/A'}°C'
                         : 'Fetching data...',
                   ),
                   InfoHexagon(
                     title: 'Inside Humidity',
                     icon: 'assets/humidity.png',
                     value: liveData != null
-                        ? 'In Humidity: ${json.decode(liveData!)['live_in_humidity'] ?? 'N/A'}%'
+                        ? '${json.decode(liveData!)['live_in_humidity'] ?? 'N/A'}%'
                         : 'Fetching data...',
                   ),
                   InfoHexagon(
                     title: 'Outside Humidity',
                     icon: 'assets/humidity.png',
                     value: liveData != null
-                        ? 'Out Humidity: ${json.decode(liveData!)['live_out_humidity'] ?? 'N/A'}%'
+                        ? '${json.decode(liveData!)['live_out_humidity'] ?? 'N/A'}%'
                         : 'Fetching data...',
                   ),
                   InfoHexagon(
                     title: 'Frequency',
                     icon: 'assets/frequency.png',
                     value: liveData != null
-                        ? 'Frequency: ${json.decode(liveData!)['live_frequency'] ?? 'N/A'}Hz'
+                        ? '${json.decode(liveData!)['live_frequency'] ?? 'N/A'}Hz'
                         : 'Fetching data...',
                   ),
                   InfoHexagon(
                     title: 'Weight',
                     icon: 'assets/pressure-gauge.png',
                     value: liveData != null
-                        ? 'Weight: ${json.decode(liveData!)['live_weight'] ?? 'N/A'}Kg'
+                        ? '${json.decode(liveData!)['live_weight'] ?? 'N/A'}Kg'
                         : 'Fetching data...',
                   ),
                   InfoHexagon(
                     title: 'CO2',
                     icon: 'assets/gas.png',
                     value: liveData != null
-                        ? 'CO2: ${json.decode(liveData!)['live_co'] ?? 'N/A'}ppm'
+                        ? '${json.decode(liveData!)['live_co'] ?? 'N/A'}ppm'
                         : 'Fetching data...',
                   ),
                   InfoHexagon(
                     title: 'Rainfall',
                     icon: 'assets/rain.png',
                     value: liveData != null
-                        ? 'Rainfall: ${json.decode(liveData!)['live_rain'] ?? 'N/A'}'
+                        ? '${json.decode(liveData!)['live_rain'] ?? 'N/A'}'
                         : 'Fetching data...',
                   ),
                   // Other InfoHexagon widgets...
@@ -188,7 +188,7 @@ class InfoHexagon extends StatelessWidget {
       child: ClipPath(
         clipper: HexagonClipper(),
         child: Container(
-          color: const Color.fromARGB(200, 248, 146, 48), // Set the background color with alpha value (opacity)
+          color: const Color.fromARGB(220, 248, 146, 48), // Set the background color with alpha value (opacity)
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -211,7 +211,8 @@ class InfoHexagon extends StatelessWidget {
                 Text(
                   value,
                   style: const TextStyle(
-                    fontSize: 13,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],

@@ -1,128 +1,251 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:intl/intl.dart';
 
 class TimeAnalysis extends StatefulWidget {
-  const TimeAnalysis({super.key});
+  const TimeAnalysis({Key? key}) : super(key: key);
 
   @override
   State<TimeAnalysis> createState() => _TimeAnalysisState();
 }
 
 class _TimeAnalysisState extends State<TimeAnalysis> {
-  List<TemperatureData> insideTempData = [
-    TemperatureData(DateTime(2022, 01, 01), 35),
-    TemperatureData(DateTime(2022, 02, 01), 28),
-    TemperatureData(DateTime(2022, 03, 01), 34),
-    TemperatureData(DateTime(2022, 04, 01), 32),
-    TemperatureData(DateTime(2022, 05, 01), 40),
-  ];
+  List<TemperatureData> insideTempData = [];
+  List<TemperatureData> outsideTempData = [];
+  List<HumData> insideHumData = [];
+  List<HumData> outsideHumData = [];
+  List<FreqData> freqData = [];
 
-  List<TemperatureData> outsideTempData = [
-    TemperatureData(DateTime(2022, 01, 01), 25),
-    TemperatureData(DateTime(2022, 02, 01), 22),
-    TemperatureData(DateTime(2022, 03, 01), 30),
-    TemperatureData(DateTime(2022, 04, 01), 28),
-    TemperatureData(DateTime(2022, 05, 01), 35),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
 
-  List<HumidityData> insideHumidityData = [
-    HumidityData(DateTime(2022, 01, 01), 50),
-    HumidityData(DateTime(2022, 02, 01), 48),
-    HumidityData(DateTime(2022, 03, 01), 52),
-    HumidityData(DateTime(2022, 04, 01), 55),
-    HumidityData(DateTime(2022, 05, 01), 60),
-  ];
+  Future<void> fetchData() async {
+    final response = await http.get(Uri.parse(
+        'https://cf7b-112-134-114-167.ngrok-free.app/api/timely_data'));
+    if (response.statusCode == 200) {
+      List<dynamic> responseData = json.decode(response.body);
+      setState(() {
+        insideTempData = responseData.map((item) {
+          int unixTimestamp = int.parse(item['timestamp']);
+          DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(unixTimestamp * 1000);
+          double temperature = double.parse(item['inside_temperature']);
+          return TemperatureData(dateTime, temperature);
+        }).toList();
 
-  List<HumidityData> outsideHumidityData = [
-    HumidityData(DateTime(2022, 01, 01), 45),
-    HumidityData(DateTime(2022, 02, 01), 42),
-    HumidityData(DateTime(2022, 03, 01), 48),
-    HumidityData(DateTime(2022, 04, 01), 50),
-    HumidityData(DateTime(2022, 05, 01), 55),
-  ];
+        outsideTempData = responseData.map((item) {
+          int unixTimestamp = int.parse(item['timestamp']);
+          DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(unixTimestamp * 1000);
+          double temperature = double.parse(item['outside_temperature']);
+          return TemperatureData(dateTime, temperature);
+        }).toList();
 
-  List<CO2LevelData> co2Data = [
-    CO2LevelData(DateTime(2022, 01, 01), 400),
-    CO2LevelData(DateTime(2022, 02, 01), 450),
-    CO2LevelData(DateTime(2022, 03, 01), 500),
-    CO2LevelData(DateTime(2022, 04, 01), 420),
-    CO2LevelData(DateTime(2022, 05, 01), 480),
-  ];
+        insideHumData = responseData.map((item) {
+          int unixTimestamp = int.parse(item['timestamp']);
+          DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(unixTimestamp * 1000);
+          double humidity = double.parse(item['inside_humidity']);
+          return HumData(dateTime, humidity);
+        }).toList();
 
-  List<HiveWeightData> hiveWeightData = [
-    HiveWeightData(DateTime(2022, 01, 01), 50),
-    HiveWeightData(DateTime(2022, 02, 01), 48),
-    HiveWeightData(DateTime(2022, 03, 01), 52),
-    HiveWeightData(DateTime(2022, 04, 01), 55),
-    HiveWeightData(DateTime(2022, 05, 01), 60),
-  ];
+        outsideHumData = responseData.map((item) {
+          int unixTimestamp = int.parse(item['timestamp']);
+          DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(unixTimestamp * 1000);
+          double humidity = double.parse(item['outside_humidity']);
+          return HumData(dateTime, humidity);
+        }).toList();
+
+        freqData = responseData.map((item) {
+          int unixTimestamp = int.parse(item['timestamp']);
+          DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(unixTimestamp * 1000);
+          double frequency = double.parse(item['frequency']);
+          return FreqData(dateTime, frequency);
+        }).toList();
+      });
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Timely Analysis"),
+        title: const Text('Time Analysis'),
+        backgroundColor: const Color.fromARGB(255, 242, 207, 13),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 216, 184, 0),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildChart(
-                "Temperature Analysis", insideTempData, outsideTempData),
-            _buildChart(
-                "Humidity Analysis", insideHumidityData, outsideHumidityData),
-            _buildChart("CO2 Level", co2Data, []),
-            _buildChart("Hive Weight", hiveWeightData, []),
-          ],
-        ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/background_image.jpg', // Adjust the path according to your image location
+              fit: BoxFit.cover,
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildChart("Temperature Analysis", insideTempData, outsideTempData),
+                _buildChart("Humidity Analysis", insideHumData, outsideHumData),
+                _buildChartSingle("Frequency Analysis", freqData),
+              ],
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255,242,207,13),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.logout),
+            label: 'Log out',
+          ),
+        ],
+        selectedItemColor: const Color.fromARGB(255, 242, 255, 242),
+        unselectedItemColor: const Color.fromARGB(255, 44, 43, 43),
+        onTap: (int index) {
+          if (index == 1) {
+            // Implement your logout logic here
+          }
+        },
       ),
     );
   }
 
-  Widget _buildChart(
-      String title, List<dynamic> insideData, List<dynamic> outsideData) {
+  Widget _buildChart(String title, List<dynamic> insideData, List<dynamic> outsideData) {
+    if (insideData.isEmpty || outsideData.isEmpty) {
+      return Text('No data available');
+    }
+
+    DateTime minDate = insideData.map((item) => item.dateTime).reduce((value, element) => value.isBefore(element) ? value : element);
+    DateTime maxDate = insideData.map((item) => item.dateTime).reduce((value, element) => value.isAfter(element) ? value : element);
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
       child: SfCartesianChart(
-        primaryXAxis: const DateTimeAxis(),
+        plotAreaBorderWidth: 0,
+        primaryXAxis: DateTimeAxis(
+          minimum: minDate,
+          maximum: maxDate,
+          intervalType: DateTimeIntervalType.auto,
+          dateFormat: DateFormat('MM/dd/yyyy\nhh:mm a'),
+          labelRotation: -45,
+          labelIntersectAction: AxisLabelIntersectAction.multipleRows,
+        ),
         title: ChartTitle(text: title),
-        legend: const Legend(isVisible: true),
+        legend: Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CartesianSeries>[
           LineSeries<dynamic, DateTime>(
             dataSource: insideData,
             xValueMapper: (dynamic item, _) => item.dateTime,
-            yValueMapper: (dynamic item, _) => item is TemperatureData
-                ? item.temperature
-                : (item is HumidityData
-                    ? item.humidity
-                    : (item is CO2LevelData
-                        ? item.co2Level
-                        : (item is HiveWeightData ? item.hiveWeight : 0))),
+            yValueMapper: (dynamic item, _) {
+              if (item is TemperatureData) {
+                return item.temperature;
+              } else if (item is HumData) {
+                return item.humidity;
+              }
+              return 0;
+            },
             name: 'Inside',
-            dataLabelSettings: const DataLabelSettings(isVisible: true),
+            color: Colors.blue.withOpacity(0.7),
+            dataLabelSettings: DataLabelSettings(isVisible: true),
           ),
-          if (outsideData.isNotEmpty)
-            LineSeries<dynamic, DateTime>(
-              dataSource: outsideData,
-              xValueMapper: (dynamic item, _) => item.dateTime,
-              yValueMapper: (dynamic item, _) => item is TemperatureData
-                  ? item.temperature
-                  : (item is HumidityData
-                      ? item.humidity
-                      : (item is CO2LevelData
-                          ? item.co2Level
-                          : (item is HiveWeightData ? item.hiveWeight : 0))),
-              name: 'Outside',
-              dataLabelSettings: const DataLabelSettings(isVisible: true),
-            ),
+          LineSeries<dynamic, DateTime>(
+            dataSource: outsideData,
+            xValueMapper: (dynamic item, _) => item.dateTime,
+            yValueMapper: (dynamic item, _) {
+              if (item is TemperatureData) {
+                return item.temperature;
+              } else if (item is HumData) {
+                return item.humidity;
+              }
+              return 0;
+            },
+            name: 'Outside',
+            color: Color.fromARGB(
+                255, 248, 146, 48),
+            dataLabelSettings: DataLabelSettings(isVisible: true),
+          ),
         ],
       ),
     );
   }
 }
+
+Widget _buildChartSingle(String title, List<dynamic> Data) {
+  if (Data.isEmpty) {
+    return Text('No data available');
+  }
+
+  DateTime minDate = Data.map((item) => item.dateTime).reduce((value, element) => value.isBefore(element) ? value : element);
+  DateTime maxDate = Data.map((item) => item.dateTime).reduce((value, element) => value.isAfter(element) ? value : element);
+
+  return Container(
+    margin: const EdgeInsets.all(10),
+    padding: const EdgeInsets.all(10),
+    decoration: BoxDecoration(
+      color: Colors.white.withOpacity(0.8),
+      borderRadius: BorderRadius.circular(10),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
+    child: SfCartesianChart(
+      plotAreaBorderWidth: 0,
+      primaryXAxis: DateTimeAxis(
+        minimum: minDate,
+        maximum: maxDate,
+        intervalType: DateTimeIntervalType.auto,
+        dateFormat: DateFormat('MM/dd/yyyy\nhh:mm a'),
+        labelRotation: -45,
+        labelIntersectAction: AxisLabelIntersectAction.multipleRows,
+      ),
+      title: ChartTitle(text: title),
+      legend: Legend(isVisible: true),
+      tooltipBehavior: TooltipBehavior(enable: true),
+      series: <CartesianSeries>[
+        LineSeries<dynamic, DateTime>(
+          dataSource: Data,
+          xValueMapper: (dynamic item, _) => item.dateTime,
+          yValueMapper: (dynamic item, _) => item.freq,
+          name: 'Frequency',
+          color: Color.fromARGB(
+              255, 248, 146, 48),
+          dataLabelSettings: DataLabelSettings(isVisible: true),
+        ),
+      ],
+    ),
+  );
+}
+
 
 class TemperatureData {
   final DateTime dateTime;
@@ -131,23 +254,15 @@ class TemperatureData {
   TemperatureData(this.dateTime, this.temperature);
 }
 
-class HumidityData {
+class HumData {
   final DateTime dateTime;
   final double humidity;
 
-  HumidityData(this.dateTime, this.humidity);
+  HumData(this.dateTime, this.humidity);
 }
-
-class CO2LevelData {
+class FreqData {
   final DateTime dateTime;
-  final double co2Level;
+  final double freq;
 
-  CO2LevelData(this.dateTime, this.co2Level);
-}
-
-class HiveWeightData {
-  final DateTime dateTime;
-  final double hiveWeight;
-
-  HiveWeightData(this.dateTime, this.hiveWeight);
+  FreqData(this.dateTime, this.freq);
 }
