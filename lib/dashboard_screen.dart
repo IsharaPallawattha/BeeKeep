@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'live.dart';
 import 'timely_analysis.dart';
+import 'dashboard.dart';
 
 class Hives extends StatefulWidget {
   final String apiaryId;
@@ -131,7 +132,7 @@ class _HivesState extends State<Hives> {
                                 onPressed: () {
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const Live()),
+                                    MaterialPageRoute(builder: (context) => const DashboardPage()),
                                   );
                                 },
                                 style: ButtonStyle(
