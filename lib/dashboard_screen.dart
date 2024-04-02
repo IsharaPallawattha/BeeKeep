@@ -7,7 +7,7 @@ class Hives extends StatefulWidget {
   final String apiaryId;
   final String userId;
 
-  const Hives({super.key, required this.apiaryId, required this.userId});
+  const Hives({Key? key, required this.apiaryId, required this.userId}) : super(key: key);
 
   @override
   State<Hives> createState() => _HivesState();
@@ -19,7 +19,7 @@ class _HivesState extends State<Hives> {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('Users')
-          .doc(widget.userId) // Replace 'U001' with your actual document ID
+          .doc(widget.userId)
           .collection('Apiary')
           .doc(widget.apiaryId)
           .collection('Hives')
@@ -31,110 +31,162 @@ class _HivesState extends State<Hives> {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
           return const Center(
-              child: Text('No hives available for this apiary'));
+            child: Text('No hives available for this apiary'),
+          );
         } else {
           final hivesData = snapshot.data!.docs;
 
           return Scaffold(
             appBar: AppBar(
               title: const Text('Hi Liyanage !'),
-              backgroundColor: Color.fromARGB(255, 216, 184, 0),
+              backgroundColor: const Color.fromARGB(255,242,207,13),
               centerTitle: true,
             ),
             body: Container(
-              color: Colors.yellow,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/background_image.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
               child: Center(
                 child: ListView.builder(
                   itemCount: hivesData.length,
                   itemBuilder: (context, index) {
-                    final hive =
-                        hivesData[index].data()! as Map<String, dynamic>;
+                    final hive = hivesData[index].data()! as Map<String, dynamic>;
                     return Container(
                       margin: const EdgeInsets.all(20),
-                      height: 200,
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white, // Reduced transparency
+                        borderRadius: BorderRadius.circular(16),
+                        // border: Border.all(color: Colors.white, width: 2),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 3,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            hive['name']
-                                as String, // Convert integer to string before displaying
-                            style: const TextStyle(fontSize: 24),
+                          CircleAvatar(
+                            backgroundColor: const Color.fromARGB(255, 248, 146, 48),
+                            radius: 40,
+                            backgroundImage: AssetImage('assets/bee.png'),
                           ),
                           const SizedBox(height: 16),
                           Text(
+                            hive['name'] as String,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
                             'Key: ${hive['key']}',
-                            style: const TextStyle(fontSize: 18),
+                            style: const TextStyle(fontSize: 14, color: Colors.black),
                           ),
                           const SizedBox(height: 16),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              TextButton(
+                              ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Live(),
+                                    MaterialPageRoute(builder: (context) => const Live()),
+                                  );
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
-                                  );
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    71,
-                                    134,
-                                    186,
                                   ),
-                                  foregroundColor: Colors.white,
                                 ),
-                                child: const Text('Live Data'),
-                              ),
-                              const SizedBox(width: 20),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Live(),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 3,
+                                    horizontal: 3,
+                                  ),
+                                  child: Text(
+                                    'Live',
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
                                     ),
-                                  );
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    255,
-                                    165,
-                                    0,
                                   ),
-                                  foregroundColor: Colors.white,
                                 ),
-                                child: const Text('Alerts'),
                               ),
-                              const SizedBox(width: 20),
-                              TextButton(
+                              const SizedBox(width: 2),
+                              ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const TimeAnalysis()),
+                                    MaterialPageRoute(builder: (context) => const Live()),
                                   );
                                 },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    71,
-                                    134,
-                                    186,
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 146, 48)),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
                                   ),
-                                  foregroundColor: Colors.white,
                                 ),
-                                child: const Text('Timely'),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 3,
+                                    horizontal: 3,
+                                  ),
+                                  child: Text(
+                                    'Alerts',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width:2),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const Live()),
+                                  );
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 3,
+                                    horizontal: 3,
+                                  ),
+                                  child: Text(
+                                    'Time',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -146,7 +198,7 @@ class _HivesState extends State<Hives> {
               ),
             ),
             bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: Color.fromARGB(255, 216, 184, 0),
+              backgroundColor: const Color.fromARGB(255,242,207,13),
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.dashboard),

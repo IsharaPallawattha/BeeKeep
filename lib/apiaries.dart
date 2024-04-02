@@ -6,7 +6,7 @@ import 'login_page.dart';
 class Apiaries extends StatelessWidget {
   final String userId; // Add userId parameter
 
-  const Apiaries({super.key, required this.userId});
+  const Apiaries({Key? key, required this.userId}) : super(key: key);
 
   void logout(BuildContext context) {
     Navigator.pushReplacement(
@@ -26,110 +26,136 @@ class Apiaries extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('Users')
-          .doc(userId)
-          .collection('Apiary')
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('No data available'));
-        } else {
-          final apiariesData = snapshot.data!.docs;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Hi Liyanage !'),
+        backgroundColor: Color.fromARGB(255,242,207,13),
+        centerTitle: true,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/background_image.jpg'), // Replace with your image asset path
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('Users')
+                .doc(userId)
+                .collection('Apiary')
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+                return const Center(child: Text('No data available'));
+              } else {
+                final apiariesData = snapshot.data!.docs;
 
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Hi Liyanage !'),
-              backgroundColor: Color.fromARGB(255, 216, 184, 0),
-              centerTitle: true,
-            ),
-            body: Container(
-              color: Colors.yellow,
-              child: Center(
-                child: ListView.builder(
+                return ListView.builder(
                   padding: const EdgeInsets.all(16),
                   itemCount: apiariesData.length,
                   itemBuilder: (context, index) {
-                    final apiary =
-                        apiariesData[index].data()! as Map<String, dynamic>;
+                    final apiary = apiariesData[index].data()! as Map<String, dynamic>;
                     return Container(
                       margin: const EdgeInsets.all(20),
-                      // width: 10,
-                      height: 200,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 230, 230, 230),
-                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 3,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
                       ),
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          CircleAvatar(
+                            backgroundColor: Color.fromARGB(
+                                255, 248, 146, 48),
+                            radius: 40,
+                            backgroundImage: AssetImage('assets/apiary.png'), // Replace with your image asset path
+                          ),
+                          const SizedBox(height: 16),
                           Text(
                             apiary['name'] as String,
-                            style: const TextStyle(fontSize: 24),
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 8),
                           Text(
                             'Location: ${apiary['location']}',
-                            style: const TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 16),
                           ),
                           const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  navigateToHives(
-                                      context, apiariesData[index].id);
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Color.fromARGB(
-                                    255,
-                                    71,
-                                    134,
-                                    186,
-                                  ),
-                                  foregroundColor: Colors.white,
+                          ElevatedButton(
+                            onPressed: () {
+                              navigateToHives(context, apiariesData[index].id);
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  255, 248, 146, 48)),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                child: const Text('Hives'),
                               ),
-                            ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 20,
+                              ),
+                              child: Text(
+                                'View Hives',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
                     );
                   },
-                ),
-              ),
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: Color.fromARGB(255, 216, 184, 0),
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.dashboard),
-                  label: 'Dashboard',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.logout),
-                  label: 'Log out',
-                ),
-              ],
-              selectedItemColor: const Color.fromARGB(255, 242, 255, 242),
-              unselectedItemColor: const Color.fromARGB(255, 44, 43, 43),
-              onTap: (int index) {
-                if (index == 1) {
-                  logout(context);
-                }
-              },
-            ),
-          );
-        }
-      },
+                );
+              }
+            },
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor:Color.fromARGB(255,242,207,13),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.logout),
+            label: 'Log out',
+          ),
+        ],
+        selectedItemColor: const Color.fromARGB(255, 242, 255, 242),
+        unselectedItemColor: const Color.fromARGB(255, 44, 43, 43),
+        onTap: (int index) {
+          if (index == 1) {
+            logout(context);
+          }
+        },
+      ),
     );
   }
 }

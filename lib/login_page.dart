@@ -3,11 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'apiaries.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: LoginPage(), // Wrap LoginPage with Scaffold
       ),
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -35,11 +36,11 @@ class _LoginPageState extends State<LoginPage> {
     if (enteredUsername.isNotEmpty && enteredPassword.isNotEmpty) {
       try {
         QuerySnapshot<Map<String, dynamic>> usersSnapshot =
-            await FirebaseFirestore.instance.collection('Users').get();
+        await FirebaseFirestore.instance.collection('Users').get();
 
         // Iterate through the documents in the 'Users' collection
         for (QueryDocumentSnapshot<Map<String, dynamic>> user
-            in usersSnapshot.docs) {
+        in usersSnapshot.docs) {
           // Retrieve the username and password from the user document
           String storedUsername = user.data()['Username'];
           String storedPassword = user.data()['Password'];
@@ -78,103 +79,195 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        key: _scaffoldKey,
-        drawer: const Drawer(),
-        body: Stack(
-          children: <Widget>[
-            Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    Color.fromARGB(255, 216, 184, 0),
-                    Color.fromARGB(255, 216, 184, 0),
-                  ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Bee App'),
+        backgroundColor: Color.fromARGB(255, 190, 93, 0),
+      ),
+      body: Container(
+        color: Color.fromARGB(255,242,207,13),
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints:
+                BoxConstraints(minHeight: viewportConstraints.maxHeight),
+                child: Container(
+                  child: IntrinsicHeight(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Color.fromARGB(255,242,207,13),
+                          height: MediaQuery.of(context).size.height * 0.30,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  backgroundColor:  Color.fromARGB(
+                                      255, 248, 146, 48),
+                                  radius: 40,
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 50,
+                                  ),
+                                ),
+                                Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(30),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(50),
+                                topRight: Radius.circular(50),
+                              ),
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                TextField(
+                                  controller: usernameController,
+                                  autocorrect: true,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter your username',
+                                    hintStyle: TextStyle(
+                                      color: Color.fromARGB(
+                                          255, 248, 146, 48),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: BorderSide(
+                                        color:Color.fromARGB(
+                                            255, 248, 146, 48),
+                                        width: 3,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: BorderSide(
+                                        color: Color.fromARGB(
+                                            255, 248, 146, 48), // Change border color to red when focused
+                                        width: 3,
+                                      ),
+                                    ),
+                                    prefixIcon: IconTheme(
+                                      data: IconThemeData(
+                                        color: Color.fromARGB(
+                                            255, 248, 146, 48),
+                                      ),
+                                      child: Icon(Icons.verified_user),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                TextField(
+                                  controller: passwordController,
+                                  autocorrect: true,
+                                  obscureText: true,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter your password',
+                                    hintStyle: TextStyle(
+                                      color: Color.fromARGB(
+                                          255, 248, 146, 48),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: BorderSide(
+                                        color: Color.fromARGB(
+                                            255, 248, 146, 48),
+                                        width: 3,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: BorderSide(
+                                        color:Color.fromARGB(
+                                            255, 248, 146, 48), // Change border color to red when focused
+                                        width: 3,
+                                      ),
+                                    ),
+                                    prefixIcon: IconTheme(
+                                      data: IconThemeData(
+                                        color: Color.fromARGB(
+                                            255, 248, 146, 48),
+                                      ),
+                                      child: Icon(Icons.lock),
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  child: Center(
+                                    child: TextButton(
+                                      onPressed: handleLogin,
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(
+                                              255, 248, 146, 48),
+                                        ),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            'LOGIN',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          // Icon(
+                                          //   Icons.arrow_forward,
+                                          //   size: 25,
+                                          //   color: Colors.white,
+                                          // ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  width: 100, // Set the width of the container
+                                  height: 100, // Set the height of the container
+                                  child: Image.asset(
+                                    'assets/bee-hive.png', // Replace 'image_name.png' with the actual image asset path
+                                    fit: BoxFit.cover, // Adjust how the image fits into the container
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              child: _page(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _page() {
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _icon(),
-              const SizedBox(height: 50),
-              _inputField("Username", usernameController),
-              const SizedBox(height: 20),
-              _inputField("Password", passwordController, isPassword: true),
-              const SizedBox(height: 50),
-              _loginBtn(),
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _icon() {
-    return Container(
-      decoration: BoxDecoration(
-        border:
-            Border.all(color: const Color.fromARGB(255, 65, 60, 60), width: 2),
-        shape: BoxShape.circle,
-      ),
-      child: const Icon(Icons.person,
-          color: Color.fromARGB(255, 65, 60, 60), size: 120),
-    );
-  }
-
-  Widget _inputField(String hintText, TextEditingController controller,
-      {bool isPassword = false}) {
-    var border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(18),
-      borderSide: const BorderSide(color: Color.fromARGB(255, 65, 60, 60)),
-    );
-
-    return TextField(
-      style: const TextStyle(color: Color.fromARGB(255, 65, 60, 60)),
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: const TextStyle(color: Color.fromARGB(255, 65, 60, 60)),
-        enabledBorder: border,
-        focusedBorder: border,
-      ),
-      obscureText: isPassword,
-    );
-  }
-
-  Widget _loginBtn() {
-    return ElevatedButton(
-      onPressed: () {
-        handleLogin();
-      },
-      style: ElevatedButton.styleFrom(
-        foregroundColor: const Color.fromARGB(255, 241, 241, 241),
-        backgroundColor: const Color.fromARGB(255, 65, 60, 60),
-        shape: const StadiumBorder(),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-      ),
-      child: const SizedBox(
-        width: double.infinity,
-        child: Text(
-          "Login",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20),
+            );
+          },
         ),
       ),
     );
