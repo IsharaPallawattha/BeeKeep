@@ -63,13 +63,14 @@ class _HomeState extends State<Home>{
                               Spacer(),
                               GestureDetector(
                                   onTap: () {
+                                    EditUserDetails(documentId);
                                     Namecontroller.text=ds["Name"];
                                     Usernamecontroller.text=ds["Username"];
                                     Passwordcontroller.text=ds["Password"];
                                     Phonecontroller.text=ds["Phone"];
                                     Emailcontroller.text=ds["Email"];
                                   },
-                                  child: Icon(Icons.edit,color:Colors.yellow,)),
+                                  child: Icon(Icons.edit,color:const Color.fromARGB(255, 255, 101, 59),)),
                               SizedBox(width: 10.0,),
                               GestureDetector(
                                   onTap: () async{
