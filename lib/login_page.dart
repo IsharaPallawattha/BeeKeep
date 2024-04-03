@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'apiaries.dart';
+import 'admin/home.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -29,51 +30,63 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Future<void> handleLogin() async {
+  void handleLogin(BuildContext context) async {
     String enteredUsername = usernameController.text.trim();
     String enteredPassword = passwordController.text.trim();
 
     if (enteredUsername.isNotEmpty && enteredPassword.isNotEmpty) {
-      try {
-        QuerySnapshot<Map<String, dynamic>> usersSnapshot =
-        await FirebaseFirestore.instance.collection('Users').get();
-
-        // Iterate through the documents in the 'Users' collection
-        for (QueryDocumentSnapshot<Map<String, dynamic>> user
-        in usersSnapshot.docs) {
-          // Retrieve the username and password from the user document
-          String storedUsername = user.data()['Username'];
-          String storedPassword = user.data()['Password'];
-          // String storedUsername = 'user';
-          // String storedPassword = 'password';
-
-          print("sds$storedPassword");
-          print("sds$enteredPassword");
-
-          // Compare the entered username and password with the stored ones
-          if (enteredUsername == storedUsername &&
-              enteredPassword == storedPassword) {
-            // Username and password match, proceed with login
-            // For example, you can navigate to the dashboard page
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Apiaries(userId: user.id)),
-            );
-            return; // Exit the function since login is successful
-          }
-        }
-
-        // If the loop completes without finding a match, show an error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Invalid username or password.'),
+      if (enteredUsername == "admin" && enteredPassword == "abc@123") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(), // Navigate to your Home widget
           ),
         );
-      } catch (e) {
-        print("Error: $e");
-        // Handle any errors that may occur during the process
+      } else {
+        try {
+          QuerySnapshot<Map<String, dynamic>> usersSnapshot =
+          await FirebaseFirestore.instance.collection('Users').get();
+
+          // Iterate through the documents in the 'Users' collection
+          for (QueryDocumentSnapshot<Map<String, dynamic>> user
+          in usersSnapshot.docs) {
+            // Retrieve the username and password from the user document
+            String storedUsername = user.data()['Username'];
+            String storedPassword = user.data()['Password'];
+
+            // Compare the entered username and password with the stored ones
+            if (enteredUsername == storedUsername &&
+                enteredPassword == storedPassword) {
+              // Username and password match, proceed with login
+              // For example, you can navigate to the dashboard page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Apiaries(userId: user.id), // Navigate to your Apiaries widget
+                ),
+              );
+              return; // Exit the function since login is successful
+            }
+          }
+
+          // If the loop completes without finding a match, show an error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Invalid username or password.'),
+            ),
+          );
+        } catch (e) {
+          print("Error: $e");
+          // Handle any errors that may occur during the process
+        }
       }
+    } else {
+      // Show an error message if username or password is empty
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter both username and password.'),
+        ),
+      );
     }
   }
 
@@ -214,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Container(
                                   child: Center(
                                     child: TextButton(
-                                      onPressed: handleLogin,
+                                      onPressed: () => handleLogin(context), // Modify this line
                                       style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty.all<Color>(
                                           Color.fromARGB(
