@@ -101,4 +101,72 @@ class DatabaseMethods {
       print('Error deleting document: $e');
     }
   }
+
+
+  Future<bool> addHiveDetails(Map<String, dynamic> apiaryInfoMap,String userID, String apiaryID, String hiveID) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userID)
+          .collection("Apiary")
+          .doc(apiaryID)
+          .collection("Hives")
+          .doc(hiveID)
+          .set(apiaryInfoMap);
+      return true; // Return true if the operation is successful
+    } catch (e) {
+      print("Error adding user details: $e");
+      return false; // Return false if there's an error
+    }
+  }
+
+
+  //get data
+  Future<Stream<QuerySnapshot>> getHiveDetails(String userID, String apiaryID) async {
+    try {
+      return FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userID)
+          .collection("Apiary")
+          .doc(apiaryID)
+          .collection("Hives")
+          .snapshots();
+    } catch (e) {
+      print('Error getting Hive details: $e');
+      rethrow; // Re-throw the error for higher-level handling
+    }
+  }
+
+  Future<void> updateHiveDetails(String userID, String apiaryID, String hiveID, Map<String, dynamic> updateInfo) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userID)
+          .collection("Apiary")
+          .doc(apiaryID)
+          .collection("Hives")
+          .doc(hiveID)
+          .update(updateInfo);
+      print('Hive details updated successfully.');
+    } catch (e) {
+      print('Error updating hive details: $e');
+      rethrow; // Re-throw the error for higher-level handling
+    }
+  }
+
+  //delete
+  Future deleteHiveDetails(String userID, String apiaryID, String hiveID) async {
+    try {
+      // Get the reference to the document using its ID
+      DocumentReference documentReference =
+      FirebaseFirestore.instance.collection('Users').doc(userID).collection('Apiary').doc(apiaryID).collection("Hives").doc(hiveID);
+
+      // Delete the document
+      await documentReference.delete();
+
+      print('Deleted successfully.');
+    } catch (e) {
+      print('Error deleting document: $e');
+    }
+  }
 }

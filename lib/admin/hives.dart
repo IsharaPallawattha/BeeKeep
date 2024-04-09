@@ -1,28 +1,27 @@
-import 'add_apiary.dart';
+import 'add_hive.dart';
 import 'service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'hives.dart';
 
-class Apiaries extends StatefulWidget {
-  final String userId; // Add userId parameter
-  const Apiaries({Key? key, required this.userId}) : super(key: key);
+class Hives extends StatefulWidget {
+  final String userId, apiaryId; // Add userId parameter
+  const Hives({Key? key, required this.userId, required this.apiaryId}) : super(key: key);
 
   @override
-  State<Apiaries> createState() => _ApiariesState();
+  State<Hives> createState() => _HivesState();
 }
 
-class _ApiariesState extends State<Apiaries>{
+class _HivesState extends State<Hives>{
 
   TextEditingController Namecontroller = new TextEditingController();
-  TextEditingController Locationcontroller = new TextEditingController();
+  TextEditingController Keycontroller = new TextEditingController();
 
-  Stream? Apiarystream;
+  Stream? Hivestream;
 
   getontoeload() async {
-    Apiarystream = await DatabaseMethods().getApiaryDetails(widget.userId); // Access userId from widget
+    Hivestream = await DatabaseMethods().getHiveDetails(widget.userId, widget.apiaryId); // Access userId from widget
     setState(() {
 
     });
@@ -36,7 +35,7 @@ class _ApiariesState extends State<Apiaries>{
 
   Widget allApiaryDetails(){
     return StreamBuilder(
-        stream: Apiarystream,
+        stream: Hivestream,
         builder: (context, AsyncSnapshot snapshot){
           return snapshot.hasData? SingleChildScrollView(
             child: Column(
@@ -72,22 +71,12 @@ class _ApiariesState extends State<Apiaries>{
                                         overflow: TextOverflow.visible,
                                       ),
                                     ),
-                                    Spacer(),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Hives(userId: widget.userId, apiaryId: documentId)));
-                                      },
-                                      child: Icon(
-                                        Icons.more,
-                                        color: const Color.fromARGB(255, 255, 101, 59),
-                                      ),
-                                    ),
                                     SizedBox(width: 10.0),
                                     GestureDetector(
                                       onTap: () {
-                                        EditApiaryDetails(widget.userId, documentId);
+                                        EditHiveDetails(widget.userId, widget.apiaryId, documentId);
                                         Namecontroller.text = ds["name"];
-                                        Locationcontroller.text = ds["location"];
+                                        Keycontroller.text = ds["key"];
                                       },
                                       child: Icon(
                                         Icons.edit,
@@ -97,7 +86,7 @@ class _ApiariesState extends State<Apiaries>{
                                     SizedBox(width: 10.0),
                                     GestureDetector(
                                       onTap: () async {
-                                        await DatabaseMethods().deleteApiaryDetails(widget.userId, documentId);
+                                        await DatabaseMethods().deleteHiveDetails(widget.userId, widget.apiaryId, documentId);
                                       },
                                       child: Icon(
                                         Icons.delete,
@@ -106,7 +95,7 @@ class _ApiariesState extends State<Apiaries>{
                                     ),
                                   ],
                                 ),
-                                Text("Location: "+ds["location"],
+                                Text("Key: "+ds["key"],
                                     style: TextStyle(color: const Color.fromARGB(255, 243, 33, 33),fontSize: 20.0,fontWeight: FontWeight.bold)),
 
                               ],
@@ -125,7 +114,7 @@ class _ApiariesState extends State<Apiaries>{
   Widget build(BuildContext context){
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>Apiary(userId: widget.userId,))); //must check! maybe bc the user function is not created yet?
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>Hive(userId: widget.userId, apiaryId: widget.apiaryId))); //must check! maybe bc the user function is not created yet?
 
       },child: Icon(Icons.add),),
       appBar: AppBar(
@@ -160,7 +149,7 @@ class _ApiariesState extends State<Apiaries>{
     );
   }
 
-  Future EditApiaryDetails(String userID, String apiaryID) => showDialog(context: context, builder: (context) => AlertDialog(
+  Future EditHiveDetails(String userID, String apiaryID, String hiveID) => showDialog(context: context, builder: (context) => AlertDialog(
     content:Container(
       child: SingleChildScrollView(
         child: Column(
@@ -209,7 +198,7 @@ class _ApiariesState extends State<Apiaries>{
               ),
             ),
             SizedBox(height: 20.0,),
-            Text("Location",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            Text("Key",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
             SizedBox(height: 10.0,),
             Container(
               padding: EdgeInsets.only(left: 10.0),
@@ -219,7 +208,7 @@ class _ApiariesState extends State<Apiaries>{
                   border: Border.all(color: Colors.black)
               ),
               child: TextField(
-                controller: Locationcontroller,
+                controller: Keycontroller,
                 decoration: InputDecoration(border: InputBorder.none),
               ),
             ),
@@ -228,9 +217,9 @@ class _ApiariesState extends State<Apiaries>{
             Center(child: ElevatedButton (onPressed: ()async{
               Map<String,dynamic>updateInfo={
                 "name":Namecontroller.text,
-                "location": Locationcontroller.text, // Fix Locationcontroller.text
+                "key": Keycontroller.text, // Fix Locationcontroller.text
               };
-              await DatabaseMethods().updateApiaryDetails(userID, apiaryID, updateInfo).then((value) {
+              await DatabaseMethods().updateHiveDetails(userID, apiaryID, hiveID, updateInfo).then((value) {
                 Navigator.pop(context);
               });
             },child: Text("Update"),
