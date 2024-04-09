@@ -40,7 +40,7 @@ class _LivePageState extends State<LivePage> {
   }
 
   Future<void> fetchData() async {
-    final url = Uri.parse('https://cf7b-112-134-114-167.ngrok-free.app/api/live_data');
+    final url = Uri.parse('https://08dd-2402-4000-1202-2a59-306e-6199-e380-4b8e.ngrok-free.app/api/live_data');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {

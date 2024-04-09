@@ -26,7 +26,7 @@ class _TimeAnalysisState extends State<TimeAnalysis> {
 
   Future<void> fetchData() async {
     final response = await http.get(Uri.parse(
-        'https://cf7b-112-134-114-167.ngrok-free.app/api/timely_data'));
+        'https://08dd-2402-4000-1202-2a59-306e-6199-e380-4b8e.ngrok-free.app/api/timely_data'));
     if (response.statusCode == 200) {
       List<dynamic> responseData = json.decode(response.body);
       setState(() {

@@ -31,8 +31,8 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
 
   void handleLogin(BuildContext context) async {
-    String enteredUsername = usernameController.text.trim();
-    String enteredPassword = passwordController.text.trim();
+    String enteredUsername = usernameController.text.trim() ?? ''; // Use empty string as default if text is null
+    String enteredPassword = passwordController.text.trim() ?? ''; // Use empty string as default if text is null // Use empty string as default if text is null
 
     if (enteredUsername.isNotEmpty && enteredPassword.isNotEmpty) {
       if (enteredUsername == "admin" && enteredPassword == "abc@123") {

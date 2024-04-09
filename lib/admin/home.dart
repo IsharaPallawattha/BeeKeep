@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'apiaries.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -61,6 +62,12 @@ class _HomeState extends State<Home>{
                               Text("Username: "+ds["Username"],
                                   style: TextStyle(color: Colors.blue,fontSize: 20.0,fontWeight: FontWeight.bold)),
                               Spacer(),
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Apiaries(userId: documentId,)));
+                                  },
+                                  child: Icon(Icons.home,color:const Color.fromARGB(255, 255, 101, 59),)),
+                              SizedBox(width: 10.0,),
                               GestureDetector(
                                   onTap: () {
                                     EditUserDetails(documentId);
@@ -135,128 +142,130 @@ class _HomeState extends State<Home>{
 
   Future EditUserDetails(String id)=> showDialog(context: context, builder: (context)=>AlertDialog(
     content:Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              GestureDetector(
-                  onTap: (){
-                    Navigator.pop(context);
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
 
-                  },
-                  child: Icon(Icons.cancel)),
-              SizedBox(width: 60.0,),
-              Text(
-                "Edit",
-                style: TextStyle(
-                    color: const Color.fromARGB(255, 169, 158, 60),
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold),
+                    },
+                    child: Icon(Icons.cancel)),
+                SizedBox(width: 60.0,),
+                Text(
+                  "Edit",
+                  style: TextStyle(
+                      color: const Color.fromARGB(255, 169, 158, 60),
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Details",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 255, 193, 37),
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                ),
+
+              ],
+            ),
+            SizedBox(height: 20.0,),
+
+            Text("Username",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10.0,),
+            Container(
+              padding: EdgeInsets.only(left: 10.0),
+              decoration:BoxDecoration(
+                  color: Color.fromARGB(70, 251, 247, 5),
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(color: Colors.black)
               ),
-              Text(
-                "Details",
-                style: TextStyle(
-                    color: Color.fromARGB(255, 255, 193, 37),
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold),
+              child: TextField(
+                controller: Usernamecontroller,
+                decoration: InputDecoration(border: InputBorder.none),
               ),
+            ),
+            SizedBox(height: 20.0,),
+            Text("Password",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10.0,),
+            Container(
+              padding: EdgeInsets.only(left: 10.0),
+              decoration:BoxDecoration(
+                  color: Color.fromARGB(70, 251, 247, 5),
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(color: Colors.black)
+              ),
+              child: TextField(
+                controller: Passwordcontroller,
+                decoration: InputDecoration(border: InputBorder.none),
+              ),
+            ),
+            SizedBox(height: 20.0,),
+            Text("Name",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10.0,),
+            Container(
+              padding: EdgeInsets.only(left: 10.0),
+              decoration:BoxDecoration(
+                  color: Color.fromARGB(70, 251, 247, 5),
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(color: Colors.black)
+              ),
+              child: TextField(
+                controller: Namecontroller,
+                decoration: InputDecoration(border: InputBorder.none),
+              ),
+            ),
+            SizedBox(height: 20.0,),
+            Text("Phone Number",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10.0,),
+            Container(
+              padding: EdgeInsets.only(left: 10.0),
+              decoration:BoxDecoration(
+                  color: Color.fromARGB(70, 251, 247, 5),
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(color: Colors.black)
+              ),
+              child: TextField(
+                controller: Phonecontroller,
+                decoration: InputDecoration(border: InputBorder.none),
+              ),
+            ),
+            SizedBox(height: 20.0,),
+            Text("Email",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10.0,),
+            Container(
+              padding: EdgeInsets.only(left: 10.0),
+              decoration:BoxDecoration(
+                  color: Color.fromARGB(70, 251, 247, 5),
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(color: Colors.black)
+              ),
+              child: TextField(
+                controller: Emailcontroller,
+                decoration: InputDecoration(border: InputBorder.none),
+              ),
+            ),
+            SizedBox(height: 20.0,),
+            Center(child: ElevatedButton (onPressed: ()async{
+              Map<String,dynamic>updateInfo={
+                "Username":Usernamecontroller.text,
+                "Password":Passwordcontroller.text,
+                "Name":Namecontroller.text,
+                "Phone":Phonecontroller.text,
+                "Email":Emailcontroller.text,
+              };
+              await DatabaseMethods().updateUserDetails(id, updateInfo).then((value) {
+                Navigator.pop(context);
+              });
+            },child: Text("Update"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.yellow, ),)),
 
-            ],
-          ),
-          SizedBox(height: 20.0,),
-
-          Text("Username",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
-          SizedBox(height: 10.0,),
-          Container(
-            padding: EdgeInsets.only(left: 10.0),
-            decoration:BoxDecoration(
-                color: Color.fromARGB(70, 251, 247, 5),
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(color: Colors.black)
-            ),
-            child: TextField(
-              controller: Usernamecontroller,
-              decoration: InputDecoration(border: InputBorder.none),
-            ),
-          ),
-          SizedBox(height: 20.0,),
-          Text("Password",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
-          SizedBox(height: 10.0,),
-          Container(
-            padding: EdgeInsets.only(left: 10.0),
-            decoration:BoxDecoration(
-                color: Color.fromARGB(70, 251, 247, 5),
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(color: Colors.black)
-            ),
-            child: TextField(
-              controller: Passwordcontroller,
-              decoration: InputDecoration(border: InputBorder.none),
-            ),
-          ),
-          SizedBox(height: 20.0,),
-          Text("Name",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
-          SizedBox(height: 10.0,),
-          Container(
-            padding: EdgeInsets.only(left: 10.0),
-            decoration:BoxDecoration(
-                color: Color.fromARGB(70, 251, 247, 5),
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(color: Colors.black)
-            ),
-            child: TextField(
-              controller: Namecontroller,
-              decoration: InputDecoration(border: InputBorder.none),
-            ),
-          ),
-          SizedBox(height: 20.0,),
-          Text("Phone Number",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
-          SizedBox(height: 10.0,),
-          Container(
-            padding: EdgeInsets.only(left: 10.0),
-            decoration:BoxDecoration(
-                color: Color.fromARGB(70, 251, 247, 5),
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(color: Colors.black)
-            ),
-            child: TextField(
-              controller: Phonecontroller,
-              decoration: InputDecoration(border: InputBorder.none),
-            ),
-          ),
-          SizedBox(height: 20.0,),
-          Text("Email",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
-          SizedBox(height: 10.0,),
-          Container(
-            padding: EdgeInsets.only(left: 10.0),
-            decoration:BoxDecoration(
-                color: Color.fromARGB(70, 251, 247, 5),
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(color: Colors.black)
-            ),
-            child: TextField(
-              controller: Emailcontroller,
-              decoration: InputDecoration(border: InputBorder.none),
-            ),
-          ),
-          SizedBox(height: 20.0,),
-          Center(child: ElevatedButton (onPressed: ()async{
-            Map<String,dynamic>updateInfo={
-              "Username":Usernamecontroller.text,
-              "Password":Passwordcontroller.text,
-              "Name":Namecontroller.text,
-              "Phone":Phonecontroller.text,
-              "Email":Emailcontroller.text,
-            };
-            await DatabaseMethods().updateUserDetails(id, updateInfo).then((value) {
-              Navigator.pop(context);
-            });
-          },child: Text("Update"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.yellow, ),)),
-
-        ],
+          ],
+        ),
       ),
     ),
   ));

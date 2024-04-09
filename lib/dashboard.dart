@@ -23,7 +23,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Future<void> fetchData() async {
     final response = await http.get(
-        Uri.parse('https://cf7b-112-134-114-167.ngrok-free.app/api/alerts'));
+        Uri.parse('https://08dd-2402-4000-1202-2a59-306e-6199-e380-4b8e.ngrok-free.app/api/alerts'));
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = json.decode(response.body);
       setState(() {

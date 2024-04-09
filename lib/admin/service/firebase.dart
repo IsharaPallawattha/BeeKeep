@@ -41,4 +41,64 @@ class DatabaseMethods {
     }
   }
 
+  Future<bool> addApiaryDetails(Map<String, dynamic> apiaryInfoMap,String userID, String apiaryID) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userID)
+          .collection("Apiary")
+          .doc(apiaryID)
+          .set(apiaryInfoMap);
+      return true; // Return true if the operation is successful
+    } catch (e) {
+      print("Error adding user details: $e");
+      return false; // Return false if there's an error
+    }
+  }
+
+
+  //get data
+  Future<Stream<QuerySnapshot>> getApiaryDetails(String userID) async {
+    try {
+      return FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userID)
+          .collection("Apiary")
+          .snapshots();
+    } catch (e) {
+      print('Error getting apiary details: $e');
+      rethrow; // Re-throw the error for higher-level handling
+    }
+  }
+
+  Future<void> updateApiaryDetails(String userID, String apiaryID, Map<String, dynamic> updateInfo) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userID)
+          .collection("Apiary")
+          .doc(apiaryID)
+          .update(updateInfo);
+      print('Apiary details updated successfully.');
+    } catch (e) {
+      print('Error updating apiary details: $e');
+      rethrow; // Re-throw the error for higher-level handling
+    }
+  }
+
+  //delete
+  Future deleteApiaryDetails(String userID, String apiaryID) async {
+    try {
+      // Get the reference to the document using its ID
+      DocumentReference documentReference =
+      FirebaseFirestore.instance.collection('Users').doc(userID).collection('Apiary').doc(apiaryID);
+
+      // Delete the document
+      await documentReference.delete();
+
+      print('Deleted successfully.');
+    } catch (e) {
+      print('Error deleting document: $e');
+    }
+  }
 }
