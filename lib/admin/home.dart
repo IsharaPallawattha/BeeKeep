@@ -1,4 +1,6 @@
 
+import 'package:flutter_application_2/login_page.dart';
+
 import 'user.dart';
 import 'service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'apiaries.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_2/admin/user.dart' as user_page;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -105,7 +109,7 @@ class _HomeState extends State<Home>{
   Widget build(BuildContext context){
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>User())); //must check! maybe bc the user function is not created yet?
+       Navigator.push(context, MaterialPageRoute(builder: (context)=>user_page.User())); //must check! maybe bc the user function is not created yet?
 
       },child: Icon(Icons.add),),
       appBar: AppBar(
@@ -127,8 +131,20 @@ class _HomeState extends State<Home>{
                   fontWeight: FontWeight.bold),
             ),
           ],
+           
 
-        ),),
+        ),
+         actions: <Widget>[
+    IconButton(
+      icon: Icon(Icons.logout),
+      onPressed: () async {
+         await FirebaseAuth.instance.signOut();
+         Navigator.of(context).pushReplacement(
+         MaterialPageRoute(builder: (context) => LoginPage()),);
+      },
+    ),
+  ],
+        ),
       body:Container(
         margin: EdgeInsets.only(left: 20.0, right: 20.0,top: 30.0),
         child:Column(
