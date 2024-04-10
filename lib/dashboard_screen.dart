@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_2/login_page.dart';
 import 'live.dart';
 import 'timely_analysis.dart';
 import 'dashboard.dart';
@@ -9,11 +10,18 @@ class Hives extends StatefulWidget {
   final String userId;
 
   const Hives({Key? key, required this.apiaryId, required this.userId}) : super(key: key);
+ 
+ 
 
   @override
   State<Hives> createState() => _HivesState();
 }
 
+ void logout(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );}
 class _HivesState extends State<Hives> {
   @override
   Widget build(BuildContext context) {
@@ -214,7 +222,7 @@ class _HivesState extends State<Hives> {
               unselectedItemColor: const Color.fromARGB(255, 44, 43, 43),
               onTap: (int index) {
                 if (index == 1) {
-                  // Implement your logout logic here
+                  logout(context);
                 }
               },
             ),
