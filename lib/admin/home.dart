@@ -141,13 +141,25 @@ class _HomeState extends State<Home>{
   ],
    backgroundColor: Color.fromARGB(255, 255, 193, 37),
         ),
-      body:Container(
-        margin: EdgeInsets.only(left: 20.0, right: 20.0,top: 30.0),
-        child:Column(
-          children: [
-            Expanded(child: allUserDetails()),
-          ],
-        ),
+       body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/comb.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
+            child: Column(
+              children: [
+                Expanded(child: allUserDetails()),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
