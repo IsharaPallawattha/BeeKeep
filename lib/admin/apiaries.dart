@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'hives.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_application_2/admin/user.dart' as user_page;
+// import 'package:flutter_application_2/admin/user.dart' as user_page;
 
 
 class Apiaries extends StatefulWidget {

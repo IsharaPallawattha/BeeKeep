@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'service/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
@@ -47,6 +45,8 @@ class _HiveState extends State<Hive> {
         backgroundColor: const Color(0xFFFFA07A),
       ),
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,

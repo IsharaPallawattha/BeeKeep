@@ -45,6 +45,8 @@ class _ApiaryState extends State<Apiary> {
         backgroundColor: const Color(0xFFFFA07A),
       ),
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,

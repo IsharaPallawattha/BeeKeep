@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dashboard_screen.dart';
-import 'login_page.dart';
+import '../login_page.dart';
 
 class Apiaries extends StatelessWidget {
   final String userId; // Add userId parameter

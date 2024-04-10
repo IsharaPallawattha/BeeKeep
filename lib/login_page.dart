@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'apiaries.dart';
-import 'admin/home.dart';
+import 'bee_keeper/apiaries.dart';
+import 'admin/users.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

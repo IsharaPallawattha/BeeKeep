@@ -1,7 +1,7 @@
 
 import 'package:flutter_application_2/login_page.dart';
 
-import 'user.dart';
+// import 'add_user.dart';
 import 'service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'apiaries.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_application_2/admin/user.dart' as user_page;
+import 'package:flutter_application_2/admin/add_user.dart' as user_page;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
