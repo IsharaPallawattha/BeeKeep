@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:flutter_application_2/login_page.dart';
+
 import 'add_apiary.dart';
 import 'service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'hives.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_2/admin/user.dart' as user_page;
+
 
 class Apiaries extends StatefulWidget {
   final String userId;
@@ -191,7 +196,20 @@ class _ApiariesState extends State<Apiaries> {
             ),
           ],
         ),
+         actions: <Widget>[
+    IconButton(
+      icon: Icon(Icons.logout),
+      onPressed: () async {
+         await FirebaseAuth.instance.signOut();
+         Navigator.of(context).pushReplacement(
+         MaterialPageRoute(builder: (context) => LoginPage()),);
+      },
+    ),
+  ],
         backgroundColor: Color.fromARGB(255, 255, 193, 37),
+
+
+
       ),
       body: Container(
         margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),

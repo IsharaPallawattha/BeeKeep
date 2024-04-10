@@ -111,25 +111,20 @@ class _HomeState extends State<Home>{
       floatingActionButton: FloatingActionButton(onPressed: (){
        Navigator.push(context, MaterialPageRoute(builder: (context)=>user_page.User())); //must check! maybe bc the user function is not created yet?
 
-      },child: Icon(Icons.add),),
+      },child: Icon(Icons.add),
+      backgroundColor: Color.fromARGB(255, 255, 193, 37),),
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Admin",
+              "Admin Page" ,
               style: TextStyle(
-                  color: const Color.fromARGB(255, 169, 158, 60),
+                  
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold),
             ),
-            Text(
-              "Page",
-              style: TextStyle(
-                  color: Color.fromARGB(255, 255, 193, 37),
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold),
-            ),
+            
           ],
            
 
@@ -144,6 +139,7 @@ class _HomeState extends State<Home>{
       },
     ),
   ],
+   backgroundColor: Color.fromARGB(255, 255, 193, 37),
         ),
       body:Container(
         margin: EdgeInsets.only(left: 20.0, right: 20.0,top: 30.0),

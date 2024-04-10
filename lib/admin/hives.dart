@@ -1,11 +1,15 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:flutter_application_2/login_page.dart';
+
 import 'add_hive.dart';
 import 'service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_2/admin/user.dart' as user_page;
 
 class Hives extends StatefulWidget {
   final String userId, apiaryId;
@@ -179,6 +183,17 @@ class _HivesState extends State<Hives> {
             ),
           ],
         ),
+
+        actions: <Widget>[
+    IconButton(
+      icon: Icon(Icons.logout),
+      onPressed: () async {
+         await FirebaseAuth.instance.signOut();
+         Navigator.of(context).pushReplacement(
+         MaterialPageRoute(builder: (context) => LoginPage()),);
+      },
+    ),
+  ],
         backgroundColor: Color.fromARGB(255, 253, 224, 71),
       ),
       body: Container(
