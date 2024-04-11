@@ -1,4 +1,4 @@
-import 'service/firebase.dart';
+import '../service/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,22 +6,21 @@ import 'package:fluttertoast/fluttertoast.dart';
 class Hive extends StatefulWidget {
   final String userId;
   final String apiaryId;
-  const Hive({Key? key, required this.userId, required this.apiaryId})
-      : super(key: key);
+  const Hive({super.key, required this.userId, required this.apiaryId});
 
   @override
   State<Hive> createState() => _HiveState();
 }
 
 class _HiveState extends State<Hive> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _keyController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _keyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
@@ -47,13 +46,13 @@ class _HiveState extends State<Hive> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              const Color(0xFFFFF5EE),
-              const Color(0xFFFFFACD),
+              Color(0xFFFFF5EE),
+              Color(0xFFFFFACD),
             ],
           ),
         ),
@@ -63,7 +62,7 @@ class _HiveState extends State<Hive> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 Center(
                   child: Image.asset(
                     'assets/hive.png',
@@ -71,16 +70,16 @@ class _HiveState extends State<Hive> {
                     height: 100.0,
                   ),
                 ),
-                SizedBox(height: 20.0),
-                Text(
+                const SizedBox(height: 20.0),
+                const Text(
                   "Name",
                   style: TextStyle(
-                    color: const Color(0xFFA52A2A),
+                    color: Color(0xFFA52A2A),
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextField(
                   controller: _nameController,
                   decoration: InputDecoration(
@@ -91,16 +90,16 @@ class _HiveState extends State<Hive> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
-                Text(
+                const SizedBox(height: 20.0),
+                const Text(
                   "Key",
                   style: TextStyle(
-                    color: const Color(0xFFA52A2A),
+                    color: Color(0xFFA52A2A),
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextField(
                   controller: _keyController,
                   decoration: InputDecoration(
@@ -111,7 +110,7 @@ class _HiveState extends State<Hive> {
                     ),
                   ),
                 ),
-                SizedBox(height: 40.0),
+                const SizedBox(height: 40.0),
                 Center(
                   child: ElevatedButton(
                     onPressed: () async {
@@ -146,20 +145,20 @@ class _HiveState extends State<Hive> {
                         );
                       }
                     },
-                    child: Text(
-                      "Add",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFFA52A2A),
-                      ),
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFFA500),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40.0, vertical: 15.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    child: const Text(
+                      "Add",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFA52A2A),
                       ),
                     ),
                   ),

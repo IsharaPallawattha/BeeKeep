@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'bee_keeper/apiaries.dart';
-import 'admin/users.dart';
+import 'bee_keeper/pages/apiary_page.dart';
+import 'admin/pages/users.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: LoginPage(), // Wrap LoginPage with Scaffold
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Home(), // Navigate to your Home widget
+            builder: (context) => const Home(), // Navigate to your Home widget
           ),
         );
       } else {
@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Apiaries(userId: user.id), // Navigate to your Apiaries widget
+                  builder: (context) => DashboardScreen(userId: user.id), // Navigate to your Apiaries widget
                 ),
               );
               return; // Exit the function since login is successful
@@ -94,11 +94,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bee App'),
-        backgroundColor: Color.fromARGB(255, 190, 93, 0),
+        title: const Text('Bee App'),
+        backgroundColor: const Color.fromARGB(255, 190, 93, 0),
       ),
       body: Container(
-        color: Color.fromARGB(255,242,207,13),
+        color: const Color.fromARGB(255,242,207,13),
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
             return SingleChildScrollView(
@@ -112,9 +112,9 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         Container(
                           width: MediaQuery.of(context).size.width,
-                          color: Color.fromARGB(255,242,207,13),
+                          color: const Color.fromARGB(255,242,207,13),
                           height: MediaQuery.of(context).size.height * 0.30,
-                          child: Center(
+                          child: const Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -140,8 +140,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(30),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(30),
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(50),
@@ -155,13 +155,13 @@ class _LoginPageState extends State<LoginPage> {
                                   autocorrect: true,
                                   decoration: InputDecoration(
                                     hintText: 'Enter your username',
-                                    hintStyle: TextStyle(
+                                    hintStyle: const TextStyle(
                                       color: Color.fromARGB(
                                           255, 248, 146, 48),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                         color:Color.fromARGB(
                                             255, 248, 146, 48),
                                         width: 3,
@@ -169,13 +169,13 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                         color: Color.fromARGB(
                                             255, 248, 146, 48), // Change border color to red when focused
                                         width: 3,
                                       ),
                                     ),
-                                    prefixIcon: IconTheme(
+                                    prefixIcon: const IconTheme(
                                       data: IconThemeData(
                                         color: Color.fromARGB(
                                             255, 248, 146, 48),
@@ -184,20 +184,20 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 TextField(
                                   controller: passwordController,
                                   autocorrect: true,
                                   obscureText: true,
                                   decoration: InputDecoration(
                                     hintText: 'Enter your password',
-                                    hintStyle: TextStyle(
+                                    hintStyle: const TextStyle(
                                       color: Color.fromARGB(
                                           255, 248, 146, 48),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                         color: Color.fromARGB(
                                             255, 248, 146, 48),
                                         width: 3,
@@ -205,13 +205,13 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                         color:Color.fromARGB(
                                             255, 248, 146, 48), // Change border color to red when focused
                                         width: 3,
                                       ),
                                     ),
-                                    prefixIcon: IconTheme(
+                                    prefixIcon: const IconTheme(
                                       data: IconThemeData(
                                         color: Color.fromARGB(
                                             255, 248, 146, 48),
@@ -221,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
 
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 Container(
@@ -230,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                                       onPressed: () => handleLogin(context), // Modify this line
                                       style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty.all<Color>(
-                                          Color.fromARGB(
+                                          const Color.fromARGB(
                                               255, 248, 146, 48),
                                         ),
                                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -239,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
                                           ),
                                         ),
                                       ),
-                                      child: Row(
+                                      child: const Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
@@ -259,10 +259,10 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
-                                Container(
+                                SizedBox(
                                   width: 100, // Set the width of the container
                                   height: 100, // Set the height of the container
                                   child: Image.asset(

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+  const DashboardPage({super.key});
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -46,7 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
         centerTitle: true,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/background_image.jpg'),
             fit: BoxFit.cover,
@@ -119,7 +119,7 @@ class _DashboardPageState extends State<DashboardPage> {
       if (avgFreqVal! > 400) {
         imagePath = 'assets/alert.png';
         title = 'Swarming Detected';
-        col = Color.fromARGB(
+        col = const Color.fromARGB(
             255, 248, 146, 48);
       } else {
         imagePath = 'assets/check.png';
@@ -131,7 +131,7 @@ class _DashboardPageState extends State<DashboardPage> {
       title = 'Sorry, Couldn\'t Load Data';
       col = Colors.red;
     }
-    return _createCard(imagePath!, title!, col!);
+    return _createCard(imagePath, title, col);
   }
 
   Widget _buildSquareCardHarvest() {
@@ -142,7 +142,7 @@ class _DashboardPageState extends State<DashboardPage> {
       if (avgHarvestVal! >= 14.00) {
         imagePath = 'assets/alert.png';
         title = 'Ready to Harvest';
-        col = Color.fromARGB(
+        col = const Color.fromARGB(
             255, 248, 146, 48);
       } else {
         imagePath = 'assets/check.png';
@@ -154,7 +154,7 @@ class _DashboardPageState extends State<DashboardPage> {
       title = 'Sorry, Couldn\'t Load Data';
       col = Colors.red;
     }
-    return _createCard(imagePath!, title!, col!);
+    return _createCard(imagePath, title, col);
   }
 
   Widget _buildSquareCardHealth() {
@@ -166,7 +166,7 @@ class _DashboardPageState extends State<DashboardPage> {
       if (result == "Unhealthy") {
         imagePath = 'assets/alert.png';
         title = 'Unhealthy Hive';
-        col = Color.fromARGB(
+        col = const Color.fromARGB(
             255, 248, 146, 48);
       } else if (result == "Healthy") {
         imagePath = 'assets/check.png';
@@ -189,7 +189,7 @@ class _DashboardPageState extends State<DashboardPage> {
       if (avgRainVal! >= 50) {
         imagePath = 'assets/alert.png';
         title = 'Feeding Required';
-        col = Color.fromARGB(
+        col = const Color.fromARGB(
             255, 248, 146, 48);
       } else {
         imagePath = 'assets/check.png';
@@ -201,7 +201,7 @@ class _DashboardPageState extends State<DashboardPage> {
       title = 'Sorry, Couldn\'t Load Data';
       col = Colors.red;
     }
-    return _createCard(imagePath!, title!, col!);
+    return _createCard(imagePath, title, col);
   }
 
   Widget _createCard(String path, String title, Color col) {

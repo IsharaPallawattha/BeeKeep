@@ -1,21 +1,21 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'service/firebase.dart';
+import '../service/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Apiary extends StatefulWidget {
   final String userId;
-  const Apiary({Key? key, required this.userId}) : super(key: key);
+  const Apiary({super.key, required this.userId});
 
   @override
   State<Apiary> createState() => _ApiaryState();
 }
 
 class _ApiaryState extends State<Apiary> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -146,20 +146,20 @@ class _ApiaryState extends State<Apiary> {
                         );
                       }
                     },
-                    child: Text(
-                      "Add",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFFA52A2A),
-                      ),
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFFA500),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40.0, vertical: 15.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    child: Text(
+                      "Add",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFFA52A2A),
                       ),
                     ),
                   ),

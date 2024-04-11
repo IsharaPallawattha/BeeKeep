@@ -3,18 +3,15 @@
 import 'package:flutter_application_2/login_page.dart';
 
 import 'add_hive.dart';
-import 'service/firebase.dart';
+import '../service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter_application_2/admin/user.dart' as user_page;
 
 class Hives extends StatefulWidget {
   final String userId, apiaryId;
-  const Hives({Key? key, required this.userId, required this.apiaryId})
-      : super(key: key);
+  const Hives({super.key, required this.userId, required this.apiaryId});
 
   @override
   State<Hives> createState() => _HivesState();
@@ -166,8 +163,8 @@ class _HivesState extends State<Hives> {
             ),
           );
         },
-        child: Icon(Icons.add),
         backgroundColor: Color.fromARGB(255, 255, 152, 0),
+        child: Icon(Icons.add),
       ),
       appBar: AppBar(
         title: Row(
@@ -307,10 +304,10 @@ class _HivesState extends State<Hives> {
                           Navigator.pop(context);
                         });
                       },
-                      child: Text("Update"),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 255, 152, 0),
                       ),
+                      child: Text("Update"),
                     ),
                   ),
                 ],

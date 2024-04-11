@@ -2,17 +2,15 @@
 import 'package:flutter_application_2/login_page.dart';
 
 // import 'add_user.dart';
-import 'service/firebase.dart';
+import '../service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'apiaries.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_application_2/admin/add_user.dart' as user_page;
+import 'package:flutter_application_2/admin/pages/add_user.dart' as user_page;
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -20,11 +18,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home>{
 
-  TextEditingController Usernamecontroller = new TextEditingController();
-  TextEditingController Passwordcontroller = new TextEditingController();
-  TextEditingController Namecontroller = new TextEditingController();
-  TextEditingController Phonecontroller = new TextEditingController();
-  TextEditingController Emailcontroller = new TextEditingController();
+  TextEditingController Usernamecontroller = TextEditingController();
+  TextEditingController Passwordcontroller = TextEditingController();
+  TextEditingController Namecontroller = TextEditingController();
+  TextEditingController Phonecontroller = TextEditingController();
+  TextEditingController Emailcontroller = TextEditingController();
   Stream? Userstream;
 
   getontoeload()async{
@@ -50,12 +48,12 @@ class _HomeState extends State<Home>{
                 DocumentSnapshot ds = snapshot.data!.docs[index];
                 String documentId = ds.id;
                 return Container(
-                  margin: EdgeInsets.only(bottom: 20),
+                  margin: const EdgeInsets.only(bottom: 20),
                   child: Material(
                     elevation: 5.0,
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
                       child:Column(
@@ -64,14 +62,14 @@ class _HomeState extends State<Home>{
                           Row(
                             children: [
                               Text("Username: "+ds["Username"],
-                                  style: TextStyle(color: Colors.blue,fontSize: 20.0,fontWeight: FontWeight.bold)),
-                              Spacer(),
+                                  style: const TextStyle(color: Colors.blue,fontSize: 20.0,fontWeight: FontWeight.bold)),
+                              const Spacer(),
                               GestureDetector(
                                   onTap: () {
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>Apiaries(userId: documentId,)));
                                   },
-                                  child: Icon(Icons.home,color:const Color.fromARGB(255, 255, 101, 59),)),
-                              SizedBox(width: 10.0,),
+                                  child: const Icon(Icons.home,color:Color.fromARGB(255, 255, 101, 59),)),
+                              const SizedBox(width: 10.0,),
                               GestureDetector(
                                   onTap: () {
                                     EditUserDetails(documentId);
@@ -81,22 +79,22 @@ class _HomeState extends State<Home>{
                                     Phonecontroller.text=ds["Phone"];
                                     Emailcontroller.text=ds["Email"];
                                   },
-                                  child: Icon(Icons.edit,color:const Color.fromARGB(255, 255, 101, 59),)),
-                              SizedBox(width: 10.0,),
+                                  child: const Icon(Icons.edit,color:Color.fromARGB(255, 255, 101, 59),)),
+                              const SizedBox(width: 10.0,),
                               GestureDetector(
                                   onTap: () async{
                                     await DatabaseMethods().deleteUserDetails(documentId);
                                   },
-                                  child: Icon(Icons.delete,color:Colors.black,))
+                                  child: const Icon(Icons.delete,color:Colors.black,))
 
                             ],
                           ),
                           Text("Password: "+ds["Password"],
-                              style: TextStyle(color: const Color.fromARGB(255, 243, 33, 33),fontSize: 20.0,fontWeight: FontWeight.bold)),
+                              style: const TextStyle(color: Color.fromARGB(255, 243, 33, 33),fontSize: 20.0,fontWeight: FontWeight.bold)),
                           Text("Name: "+ds["Name"],
-                              style: TextStyle(color: Colors.blue,fontSize: 20.0,fontWeight: FontWeight.bold)),
-                          Text("Phone Number: "+ds["Phone"],style: TextStyle(color: Colors.blue,fontSize: 20.0,fontWeight: FontWeight.bold)),
-                          Text("Email: new@gmail.com"+ds["Email"],style: TextStyle(color: Colors.blue,fontSize: 20.0,fontWeight: FontWeight.bold)),
+                              style: const TextStyle(color: Colors.blue,fontSize: 20.0,fontWeight: FontWeight.bold)),
+                          Text("Phone Number: "+ds["Phone"],style: const TextStyle(color: Colors.blue,fontSize: 20.0,fontWeight: FontWeight.bold)),
+                          Text("Email: new@gmail.com"+ds["Email"],style: const TextStyle(color: Colors.blue,fontSize: 20.0,fontWeight: FontWeight.bold)),
                         ],
                       ),  ),
                   ),
@@ -109,12 +107,12 @@ class _HomeState extends State<Home>{
   Widget build(BuildContext context){
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: (){
-       Navigator.push(context, MaterialPageRoute(builder: (context)=>user_page.User())); //must check! maybe bc the user function is not created yet?
+       Navigator.push(context, MaterialPageRoute(builder: (context)=>const user_page.User())); //must check! maybe bc the user function is not created yet?
 
-      },child: Icon(Icons.add),
-      backgroundColor: Color.fromARGB(255, 255, 193, 37),),
+      },
+      backgroundColor: const Color.fromARGB(255, 255, 193, 37),child: const Icon(Icons.add),),
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
@@ -131,20 +129,20 @@ class _HomeState extends State<Home>{
         ),
          actions: <Widget>[
     IconButton(
-      icon: Icon(Icons.logout),
+      icon: const Icon(Icons.logout),
       onPressed: () async {
          await FirebaseAuth.instance.signOut();
          Navigator.of(context).pushReplacement(
-         MaterialPageRoute(builder: (context) => LoginPage()),);
+         MaterialPageRoute(builder: (context) => const LoginPage()),);
       },
     ),
   ],
-   backgroundColor: Color.fromARGB(255, 255, 193, 37),
+   backgroundColor: const Color.fromARGB(255, 255, 193, 37),
         ),
        body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/comb.jpg"),
                 fit: BoxFit.cover,
@@ -152,7 +150,7 @@ class _HomeState extends State<Home>{
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
+            margin: const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
             child: Column(
               children: [
                 Expanded(child: allUserDetails()),
@@ -177,16 +175,16 @@ class _HomeState extends State<Home>{
                       Navigator.pop(context);
 
                     },
-                    child: Icon(Icons.cancel)),
-                SizedBox(width: 60.0,),
-                Text(
+                    child: const Icon(Icons.cancel)),
+                const SizedBox(width: 60.0,),
+                const Text(
                   "Edit",
                   style: TextStyle(
-                      color: const Color.fromARGB(255, 169, 158, 60),
+                      color: Color.fromARGB(255, 169, 158, 60),
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold),
                 ),
-                Text(
+                const Text(
                   "Details",
                   style: TextStyle(
                       color: Color.fromARGB(255, 255, 193, 37),
@@ -196,83 +194,83 @@ class _HomeState extends State<Home>{
 
               ],
             ),
-            SizedBox(height: 20.0,),
+            const SizedBox(height: 20.0,),
 
-            Text("Username",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10.0,),
+            const Text("Username",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10.0,),
             Container(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(left: 10.0),
               decoration:BoxDecoration(
-                  color: Color.fromARGB(70, 251, 247, 5),
+                  color: const Color.fromARGB(70, 251, 247, 5),
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(color: Colors.black)
               ),
               child: TextField(
                 controller: Usernamecontroller,
-                decoration: InputDecoration(border: InputBorder.none),
+                decoration: const InputDecoration(border: InputBorder.none),
               ),
             ),
-            SizedBox(height: 20.0,),
-            Text("Password",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10.0,),
+            const SizedBox(height: 20.0,),
+            const Text("Password",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10.0,),
             Container(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(left: 10.0),
               decoration:BoxDecoration(
-                  color: Color.fromARGB(70, 251, 247, 5),
+                  color: const Color.fromARGB(70, 251, 247, 5),
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(color: Colors.black)
               ),
               child: TextField(
                 controller: Passwordcontroller,
-                decoration: InputDecoration(border: InputBorder.none),
+                decoration: const InputDecoration(border: InputBorder.none),
               ),
             ),
-            SizedBox(height: 20.0,),
-            Text("Name",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10.0,),
+            const SizedBox(height: 20.0,),
+            const Text("Name",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10.0,),
             Container(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(left: 10.0),
               decoration:BoxDecoration(
-                  color: Color.fromARGB(70, 251, 247, 5),
+                  color: const Color.fromARGB(70, 251, 247, 5),
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(color: Colors.black)
               ),
               child: TextField(
                 controller: Namecontroller,
-                decoration: InputDecoration(border: InputBorder.none),
+                decoration: const InputDecoration(border: InputBorder.none),
               ),
             ),
-            SizedBox(height: 20.0,),
-            Text("Phone Number",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10.0,),
+            const SizedBox(height: 20.0,),
+            const Text("Phone Number",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10.0,),
             Container(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(left: 10.0),
               decoration:BoxDecoration(
-                  color: Color.fromARGB(70, 251, 247, 5),
+                  color: const Color.fromARGB(70, 251, 247, 5),
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(color: Colors.black)
               ),
               child: TextField(
                 controller: Phonecontroller,
-                decoration: InputDecoration(border: InputBorder.none),
+                decoration: const InputDecoration(border: InputBorder.none),
               ),
             ),
-            SizedBox(height: 20.0,),
-            Text("Email",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10.0,),
+            const SizedBox(height: 20.0,),
+            const Text("Email",style: TextStyle(color:Colors.black,fontSize: 15.0, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10.0,),
             Container(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(left: 10.0),
               decoration:BoxDecoration(
-                  color: Color.fromARGB(70, 251, 247, 5),
+                  color: const Color.fromARGB(70, 251, 247, 5),
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(color: Colors.black)
               ),
               child: TextField(
                 controller: Emailcontroller,
-                decoration: InputDecoration(border: InputBorder.none),
+                decoration: const InputDecoration(border: InputBorder.none),
               ),
             ),
-            SizedBox(height: 20.0,),
+            const SizedBox(height: 20.0,),
             Center(child: ElevatedButton (onPressed: ()async{
               Map<String,dynamic>updateInfo={
                 "Username":Usernamecontroller.text,
@@ -284,9 +282,9 @@ class _HomeState extends State<Home>{
               await DatabaseMethods().updateUserDetails(id, updateInfo).then((value) {
                 Navigator.pop(context);
               });
-            },child: Text("Update"),
+            },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.yellow, ),)),
+                backgroundColor: Colors.yellow, ),child: const Text("Update"),)),
 
           ],
         ),

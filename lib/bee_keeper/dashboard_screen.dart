@@ -9,7 +9,7 @@ class Hives extends StatefulWidget {
   final String apiaryId;
   final String userId;
 
-  const Hives({Key? key, required this.apiaryId, required this.userId}) : super(key: key);
+  const Hives({super.key, required this.apiaryId, required this.userId});
  
  
 
@@ -52,7 +52,7 @@ class _HivesState extends State<Hives> {
               centerTitle: true,
             ),
             body: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/background_image.jpg'),
                   fit: BoxFit.cover,
@@ -82,8 +82,8 @@ class _HivesState extends State<Hives> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: const Color.fromARGB(255, 248, 146, 48),
+                          const CircleAvatar(
+                            backgroundColor: Color.fromARGB(255, 248, 146, 48),
                             radius: 40,
                             backgroundImage: AssetImage('assets/bee.png'),
                           ),
@@ -120,14 +120,14 @@ class _HivesState extends State<Hives> {
                                     ),
                                   ),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
                                     vertical: 3,
                                     horizontal: 3,
                                   ),
                                   child: Text(
                                     'Live',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
@@ -151,14 +151,14 @@ class _HivesState extends State<Hives> {
                                     ),
                                   ),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
                                     vertical: 3,
                                     horizontal: 3,
                                   ),
                                   child: Text(
                                     'Alerts',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
@@ -182,14 +182,14 @@ class _HivesState extends State<Hives> {
                                     ),
                                   ),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
                                     vertical: 3,
                                     horizontal: 3,
                                   ),
                                   child: Text(
                                     'Time',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,

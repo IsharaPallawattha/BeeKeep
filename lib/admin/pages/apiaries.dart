@@ -3,11 +3,9 @@
 import 'package:flutter_application_2/login_page.dart';
 
 import 'add_apiary.dart';
-import 'service/firebase.dart';
+import '../service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'hives.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter_application_2/admin/user.dart' as user_page;
@@ -15,7 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class Apiaries extends StatefulWidget {
   final String userId;
-  const Apiaries({Key? key, required this.userId}) : super(key: key);
+  const Apiaries({super.key, required this.userId});
 
   @override
   State<Apiaries> createState() => _ApiariesState();
@@ -180,8 +178,8 @@ class _ApiariesState extends State<Apiaries> {
               MaterialPageRoute(
                   builder: (context) => Apiary(userId: widget.userId)));
         },
-        child: Icon(Icons.add),
         backgroundColor: Colors.orange,
+        child: Icon(Icons.add),
       ),
       appBar: AppBar(
         title: Row(
@@ -316,10 +314,10 @@ class _ApiariesState extends State<Apiaries> {
                             Navigator.pop(context);
                           });
                         },
-                        child: Text("Update"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.orange,
-                        )),
+                        ),
+                        child: Text("Update")),
                   ),
                 ],
               ),

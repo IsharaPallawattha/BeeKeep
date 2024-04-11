@@ -6,7 +6,7 @@ import '../login_page.dart';
 class Apiaries extends StatelessWidget {
   final String userId; // Add userId parameter
 
-  const Apiaries({Key? key, required this.userId}) : super(key: key);
+  const Apiaries({super.key, required this.userId});
 
   void logout(BuildContext context) {
     Navigator.pushReplacement(
@@ -29,11 +29,11 @@ class Apiaries extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hi Liyanage !'),
-        backgroundColor: Color.fromARGB(255,242,207,13),
+        backgroundColor: const Color.fromARGB(255,242,207,13),
         centerTitle: true,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/background_image.jpg'), // Replace with your image asset path
             fit: BoxFit.cover,
@@ -71,7 +71,7 @@ class Apiaries extends StatelessWidget {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 3,
                             blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
+                            offset: const Offset(0, 3), // changes position of shadow
                           ),
                         ],
                       ),
@@ -79,7 +79,7 @@ class Apiaries extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             backgroundColor: Color.fromARGB(
                                 255, 248, 146, 48),
                             radius: 40,
@@ -104,7 +104,7 @@ class Apiaries extends StatelessWidget {
                               navigateToHives(context, apiariesData[index].id);
                             },
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                              backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(
                                   255, 248, 146, 48)),
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -112,8 +112,8 @@ class Apiaries extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
                                 vertical: 10,
                                 horizontal: 20,
                               ),
@@ -137,7 +137,7 @@ class Apiaries extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor:Color.fromARGB(255,242,207,13),
+        backgroundColor:const Color.fromARGB(255,242,207,13),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),

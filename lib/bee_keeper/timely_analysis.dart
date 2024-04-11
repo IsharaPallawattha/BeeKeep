@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 
 class TimeAnalysis extends StatefulWidget {
-  const TimeAnalysis({Key? key}) : super(key: key);
+  const TimeAnalysis({super.key});
 
   @override
   State<TimeAnalysis> createState() => _TimeAnalysisState();
@@ -123,7 +123,7 @@ class _TimeAnalysisState extends State<TimeAnalysis> {
 
   Widget _buildChart(String title, List<dynamic> insideData, List<dynamic> outsideData) {
     if (insideData.isEmpty || outsideData.isEmpty) {
-      return Text('No data available');
+      return const Text('No data available');
     }
 
     DateTime minDate = insideData.map((item) => item.dateTime).reduce((value, element) => value.isBefore(element) ? value : element);
@@ -155,7 +155,7 @@ class _TimeAnalysisState extends State<TimeAnalysis> {
           labelIntersectAction: AxisLabelIntersectAction.multipleRows,
         ),
         title: ChartTitle(text: title),
-        legend: Legend(isVisible: true),
+        legend: const Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CartesianSeries>[
           LineSeries<dynamic, DateTime>(
@@ -171,7 +171,7 @@ class _TimeAnalysisState extends State<TimeAnalysis> {
             },
             name: 'Inside',
             color: Colors.blue.withOpacity(0.7),
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+            dataLabelSettings: const DataLabelSettings(isVisible: true),
           ),
           LineSeries<dynamic, DateTime>(
             dataSource: outsideData,
@@ -185,9 +185,9 @@ class _TimeAnalysisState extends State<TimeAnalysis> {
               return 0;
             },
             name: 'Outside',
-            color: Color.fromARGB(
+            color: const Color.fromARGB(
                 255, 248, 146, 48),
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+            dataLabelSettings: const DataLabelSettings(isVisible: true),
           ),
         ],
       ),
@@ -197,7 +197,7 @@ class _TimeAnalysisState extends State<TimeAnalysis> {
 
 Widget _buildChartSingle(String title, List<dynamic> Data) {
   if (Data.isEmpty) {
-    return Text('No data available');
+    return const Text('No data available');
   }
 
   DateTime minDate = Data.map((item) => item.dateTime).reduce((value, element) => value.isBefore(element) ? value : element);
@@ -229,7 +229,7 @@ Widget _buildChartSingle(String title, List<dynamic> Data) {
         labelIntersectAction: AxisLabelIntersectAction.multipleRows,
       ),
       title: ChartTitle(text: title),
-      legend: Legend(isVisible: true),
+      legend: const Legend(isVisible: true),
       tooltipBehavior: TooltipBehavior(enable: true),
       series: <CartesianSeries>[
         LineSeries<dynamic, DateTime>(
@@ -237,9 +237,9 @@ Widget _buildChartSingle(String title, List<dynamic> Data) {
           xValueMapper: (dynamic item, _) => item.dateTime,
           yValueMapper: (dynamic item, _) => item.freq,
           name: 'Frequency',
-          color: Color.fromARGB(
+          color: const Color.fromARGB(
               255, 248, 146, 48),
-          dataLabelSettings: DataLabelSettings(isVisible: true),
+          dataLabelSettings: const DataLabelSettings(isVisible: true),
         ),
       ],
     ),

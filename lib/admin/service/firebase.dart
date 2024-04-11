@@ -17,7 +17,7 @@ class DatabaseMethods {
 
   //get data
   Future<Stream<QuerySnapshot>> getUserDetails() async{
-    return await FirebaseFirestore.instance.collection("Users").snapshots();
+    return FirebaseFirestore.instance.collection("Users").snapshots();
   }
 
   //update
